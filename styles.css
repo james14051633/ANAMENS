@@ -6,7 +6,6 @@
 
 body {
     font-family: 'Roboto', sans-serif;
-    /* Gradiente animado */
     background: linear-gradient(270deg, #6a11cb, #2575fc, #6a11cb);
     background-size: 600% 600%;
     animation: gradientShift 30s ease infinite;
@@ -22,11 +21,9 @@ body {
     0% {
         background-position: 0% 50%;
     }
-
     50% {
         background-position: 100% 50%;
     }
-
     100% {
         background-position: 0% 50%;
     }

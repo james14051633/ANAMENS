@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ficha de Anamnese - Terapia Ocupacional</title>
+    <title>Ficha de Anamnese</title>
 
     <!-- Fontes -->
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
@@ -16,7 +16,7 @@
 
 <body>
     <div class="container">
-        <h1>Ficha de Anamnese - Terapia Ocupacional</h1>
+        <h1>Ficha de Anamnese</h1>
         <div id="progress-bar">
             <div id="progress"></div>
         </div>
@@ -147,8 +147,8 @@
                 <textarea id="apoio-familiar" name="apoio-familiar" rows="3"></textarea>
             </section>
 
-             <!-- Seção 9: Protocolos Utilizados -->
-             <section class="form-section">
+            <!-- Seção 9: Protocolos Utilizados -->
+            <section class="form-section">
                 <h2>9. Protocolos Utilizados</h2>
                 <p>Selecione os protocolos que serão utilizados no atendimento:</p>
                 <div class="checkbox-group">
@@ -168,6 +168,166 @@
                 <h2>10. Objetivos Terapêuticos</h2>
                 <label for="objetivos">Quais são os principais objetivos do tratamento?</label>
                 <textarea id="objetivos" name="objetivos" rows="4"></textarea>
+            </section>
+
+            <!-- Seção: Anamnese Adulto -->
+            <section class="form-section">
+                <h2>11. Anamnese Adulto</h2>
+                <label>Você tem alguma doença crônica?</label>
+                <textarea name="doenca-cronica" rows="2"></textarea>
+
+                <label>Está tomando algum medicamento atualmente?</label>
+                <textarea name="medicamento-atual" rows="2"></textarea>
+
+                <label>Já foi hospitalizado? Se sim, por qual motivo?</label>
+                <textarea name="hospitalizacao" rows="2"></textarea>
+
+                <label>Possui alergias?</label>
+                <textarea name="alergias-adulto" rows="2"></textarea>
+
+                <label>Qual é a sua rotina diária?</label>
+                <textarea name="rotina-diaria" rows="3"></textarea>
+
+                <label>Pratica atividades físicas? Quais e com que frequência?</label>
+                <textarea name="atividades-fisicas" rows="2"></textarea>
+
+                <label>Como está sua alimentação?</label>
+                <textarea name="alimentacao" rows="2"></textarea>
+
+                <label>Você fuma ou já fumou?</label>
+                <select name="fumante">
+                    <option value="">Selecione</option>
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+                </select>
+
+                <label>Consome bebidas alcoólicas?</label>
+                <select name="alcool">
+                    <option value="">Selecione</option>
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+                </select>
+
+                <label>Já teve alguma cirurgia?</label>
+                <textarea name="cirurgia" rows="2"></textarea>
+
+                <label>Tem histórico familiar de doenças importantes?</label>
+                <textarea name="historico-familiar" rows="2"></textarea>
+
+                <label>Como está seu sono?</label>
+                <textarea name="sono" rows="2"></textarea>
+
+                <label>Sente dores frequentes? Onde?</label>
+                <textarea name="dores" rows="2"></textarea>
+
+                <label>Tem dificuldades para realizar atividades diárias?</label>
+                <textarea name="dificuldades-atividades" rows="2"></textarea>
+
+                <label>Como está seu estado emocional?</label>
+                <textarea name="estado-emocional" rows="2"></textarea>
+            </section>
+
+            <!-- Seção: Anamnese Infantil -->
+            <section class="form-section">
+                <h2>12. Anamnese Infantil</h2>
+                <label>A criança nasceu no prazo previsto?</label>
+                <select name="nascimento-prazo">
+                    <option value="">Selecione</option>
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+                </select>
+
+                <label>Teve alguma complicação no parto?</label>
+                <textarea name="complicacao-parto" rows="2"></textarea>
+
+                <label>A criança já teve alguma doença grave?</label>
+                <textarea name="doenca-grave" rows="2"></textarea>
+
+                <label>Está tomando algum medicamento?</label>
+                <textarea name="medicamento-infantil" rows="2"></textarea>
+
+                <label>A criança apresenta alergias?</label>
+                <textarea name="alergias-infantil" rows="2"></textarea>
+
+                <label>Como é o desenvolvimento motor da criança?</label>
+                <textarea name="desenvolvimento-motor" rows="3"></textarea>
+
+                <label>A criança frequenta escola ou creche?</label>
+                <textarea name="frequencia-escola" rows="2"></textarea>
+
+                <label>Há histórico familiar de doenças?</label>
+                <textarea name="historico-familiar-infantil" rows="2"></textarea>
+
+                <label>A criança tem dificuldades de comunicação?</label>
+                <textarea name="dificuldade-comunicacao" rows="2"></textarea>
+
+                <label>Como é o comportamento da criança em casa e na escola?</label>
+                <textarea name="comportamento" rows="3"></textarea>
+
+                <label>A criança apresenta dificuldades de sono?</label>
+                <textarea name="dificuldade-sono" rows="2"></textarea>
+
+                <label>Há alguma necessidade especial?</label>
+                <textarea name="necessidade-especial" rows="2"></textarea>
+            </section>
+
+            <!-- Seção: Anamnese Geriátrica -->
+            <section class="form-section">
+                <h2>13. Anamnese Geriátrica</h2>
+                <label>Você tem alguma limitação física?</label>
+                <textarea name="limitacao-fisica" rows="2"></textarea>
+
+                <label>Está tomando medicamentos regularmente? Quais?</label>
+                <textarea name="medicamentos-geriatrico" rows="2"></textarea>
+
+                <label>Já sofreu quedas recentemente?</label>
+                <textarea name="quedas" rows="2"></textarea>
+
+                <label>Como está sua alimentação?</label>
+                <textarea name="alimentacao-geriatrica" rows="2"></textarea>
+
+                <label>Tem dificuldades para se locomover?</label>
+                <textarea name="dificuldade-locomocao" rows="2"></textarea>
+
+                <label>Como está sua memória?</label>
+                <textarea name="memoria" rows="2"></textarea>
+
+                <label>Você tem acompanhamento médico regular?</label>
+                <textarea name="acompanhamento-medico" rows="2"></textarea>
+
+                <label>Sente dores crônicas?</label>
+                <textarea name="dores-cronicas" rows="2"></textarea>
+
+                <label>Como está seu humor e disposição?</label>
+                <textarea name="humor" rows="2"></textarea>
+
+                <label>Tem apoio familiar ou social?</label>
+                <textarea name="apoio-familiar-social" rows="2"></textarea>
+            </section>
+
+            <!-- Seção: Anamnese Multiprofissional -->
+            <section class="form-section">
+                <h2>14. Anamnese Multiprofissional</h2>
+                <label>Você já fez avaliação psicológica?</label>
+                <textarea name="avaliacao-psicologica" rows="2"></textarea>
+
+                <label>Tem acompanhamento com fonoaudiólogo?</label>
+                <textarea name="acompanhamento-fonoaudiologia" rows="2"></textarea>
+
+                <label>Faz fisioterapia?</label>
+                <textarea name="fisioterapia" rows="2"></textarea>
+
+                <label>Recebe acompanhamento nutricional?</label>
+                <textarea name="acompanhamento-nutricional" rows="2"></textarea>
+
+                <label>Participa de grupos de apoio ou terapia ocupacional?</label>
+                <textarea name="grupos-apoio" rows="2"></textarea>
+
+                <label>Tem alguma dificuldade social ou de comunicação?</label>
+                <textarea name="dificuldade-social" rows="2"></textarea>
+
+                <label>Como está sua qualidade de vida?</label>
+                <textarea name="qualidade-vida" rows="2"></textarea>
             </section>
 
             <div class="buttons">

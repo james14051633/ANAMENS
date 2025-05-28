@@ -76,7 +76,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     value = input.value || 'Não preenchido';
                 }
 
-                if (input.type !== 'checkbox') {
+                // Para checkboxes agrupados, vamos coletar todos os marcados e mostrar juntos
+                if (input.type === 'checkbox') {
+                    // Já tratado acima
+                } else {
                     pdf.setFontSize(12);
                     pdf.setTextColor(0, 0, 0);
                     const text = `${label}: ${value}`;
@@ -86,8 +89,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
+            // Para checkboxes, coletar todos marcados em grupo
             const checkboxes = section.querySelectorAll('input[type="checkbox"]:checked');
             if (checkboxes.length > 0) {
+                const checkboxLabel = section.querySelector('label[for="dificuldades"]') ? section.querySelector('label[for="dificuldades"]').innerText : 'Dificuldades';
                 pdf.setFontSize(12);
                 pdf.setTextColor(0, 0, 0);
                 pdf.text('Dificuldades:', 12, y);

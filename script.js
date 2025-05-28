@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     nextBtn.addEventListener('click', () => {
         if (!checkFormValidity()) {
-            alert('Por favor, preencha todos os campos obrigatórios nesta seção.');
+            alert('Por favor, preencha todos os campos obrigatórios desta seção.');
             return;
         }
 

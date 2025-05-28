@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitBtn = document.getElementById('submit-btn');
     const printBtn = document.getElementById('print-btn');
     const progress = document.getElementById('progress');
+     const printButton = document.getElementById('printButton');
 
     let currentSection = 0;
 
@@ -41,6 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
         printBtn.style.display = 'inline-block';
     });
 
+     printButton.addEventListener('click', () => {
+        window.print();
+    });
+
     printBtn.addEventListener('click', () => {
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF();
@@ -58,7 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
             pdf.text(title, 10, y);
             y += 8;
 
-            const inputs = section.querySelectorAll('input, textarea');
+            const inputs = section.querySelectorAll('input, textarea, select');
+            let data = [];
             inputs.forEach(input => {
                 let label = '';
                 if (input.previousElementSibling && input.previousElementSibling.tagName === 'LABEL') {
@@ -76,38 +82,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     value = input.value || 'Não preenchido';
                 }
 
-                // Para checkboxes agrupados, vamos coletar todos os marcados e mostrar juntos
-                if (input.type === 'checkbox') {
-                    // Já tratado acima
-                } else {
-                    pdf.setFontSize(12);
-                    pdf.setTextColor(0, 0, 0);
-                    const text = `${label}: ${value}`;
-                    const splitText = pdf.splitTextToSize(text, 180);
-                    pdf.text(splitText, 12, y);
-                    y += splitText.length * 7;
+                  data.push([label, value]);
+            });
+
+             pdf.autoTable({
+                head: [['Campo', 'Valor']],
+                body: data,
+                startY: y,
+                theme: 'striped',
+                styles: { overflow: 'linebreak', columnWidth: 'auto' },
+                columnStyles: {
+                  0: {columnWidth: 50},
+                  1: {columnWidth: 140}
                 }
             });
 
-            // Para checkboxes, coletar todos marcados em grupo
-            const checkboxes = section.querySelectorAll('input[type="checkbox"]:checked');
-            if (checkboxes.length > 0) {
-                const checkboxLabel = section.querySelector('label[for="dificuldades"]') ? section.querySelector('label[for="dificuldades"]').innerText : 'Dificuldades';
-                pdf.setFontSize(12);
-                pdf.setTextColor(0, 0, 0);
-                pdf.text('Dificuldades:', 12, y);
-                y += 7;
-                const values = Array.from(checkboxes).map(cb => `- ${cb.value}`).join('\n');
-                const splitText = pdf.splitTextToSize(values, 180);
-                pdf.text(splitText, 18, y);
-                y += splitText.length * 7;
-            }
-
-            y += 10;
-            if (y > 270) {
-                pdf.addPage();
-                y = 20;
-            }
+             y = pdf.autoTable.previous.finalY + 10;
         });
 
         pdf.save('ficha-anamnese.pdf');

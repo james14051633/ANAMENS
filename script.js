@@ -114,6 +114,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 data.push([label, value]);
             });
 
+            // Para a seção de protocolos, coletar os selecionados
+            if (section.querySelector('h2').innerText === '9. Protocolos Utilizados') {
+                const protocolosSelecionados = [];
+                const protocolosCheckboxes = section.querySelectorAll('input[name="protocolos"]:checked');
+                protocolosCheckboxes.forEach(cb => protocolosSelecionados.push(cb.value));
+                const protocolosTexto = protocolosSelecionados.length > 0 ? protocolosSelecionados.join(', ') : 'Nenhum protocolo selecionado';
+                data.push(['Protocolos Selecionados', protocolosTexto]);
+            }
+
             pdf.autoTable({
                 head: [['Campo', 'Valor']],
                 body: data,

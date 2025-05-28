@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         pdf.setFontSize(18);
         pdf.setTextColor(74, 63, 189);
-        pdf.text('Ficha de Anamnese - Terapia Ocupacional', 10, 20);
+        pdf.text('Ficha de Anamnese', 10, 20);
 
         let y = 30;
 

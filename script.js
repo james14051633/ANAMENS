@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         prevBtn.disabled = currentSection === 0;
+        prevBtn.style.display = currentSection === 0 ? 'none' : 'inline-block';
         nextBtn.style.display = currentSection === sections.length - 1 ? 'none' : 'inline-block';
         submitBtn.style.display = currentSection === sections.length - 1 ? 'inline-block' : 'none';
         printBtn.style.display = 'none';
@@ -118,10 +119,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: data,
                 startY: y,
                 theme: 'striped',
-                styles: { overflow: 'linebreak', columnWidth: 'auto' },
+                styles: {
+                    overflow: 'linebreak',
+                    columnWidth: 'auto'
+                },
                 columnStyles: {
-                    0: { columnWidth: 50 },
-                    1: { columnWidth: 140 }
+                    0: {
+                        columnWidth: 50
+                    },
+                    1: {
+                        columnWidth: 140
+                    }
                 }
             });
 

@@ -1,163 +1,183 @@
+/* Reset básico */
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Fundo animado com gradiente suave */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    /* Gradiente animado */
-    background: linear-gradient(270deg, #6a11cb, #2575fc, #6a11cb);
-    background-size: 600% 600%;
-    animation: gradientShift 30s ease infinite;
-    color: #333;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(270deg, #6a11cb, #2575fc, #6a11cb);
+  background-size: 600% 600%;
+  animation: gradientShift 30s ease infinite;
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
 }
 
-@keyframes gradientShift {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
+/* Container principal */
 .container {
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    max-width: 700px;
-    width: 100%;
-    padding: 30px;
-    margin-bottom: 40px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  max-width: 700px;
+  width: 100%;
+  padding: 30px;
+  margin-bottom: 40px;
 }
 
+/* Títulos */
 h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #4a3fbd;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #4a3fbd;
 }
 
 h2 {
-    color: #4a3fbd;
-    margin-bottom: 20px;
+  color: #4a3fbd;
+  margin-bottom: 20px;
 }
 
+/* Labels */
 label {
-    display: block;
-    margin-top: 10px;
-    font-weight: 600;
+  display: block;
+  margin-top: 10px;
+  font-weight: 600;
 }
 
+/* Campos de formulário */
 input[type="text"],
 input[type="date"],
 input[type="tel"],
 input[type="email"],
-textarea, select {
-    width: 100%;
-    padding: 12px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 16px;
-    transition: border-color 0.3s ease;
+textarea,
+select {
+  width: 100%;
+  padding: 12px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
 }
 
 input[type="text"]:focus,
 input[type="date"]:focus,
 input[type="tel"]:focus,
 input[type="email"]:focus,
-textarea:focus, select:focus {
-    outline: none;
-    border-color: #4a3fbd;
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #4a3fbd;
 }
 
+/* Grupos de checkboxes */
 .checkbox-group {
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
 }
 
 .checkbox-group label {
-    font-weight: normal;
-    margin-bottom: 5px;
+  font-weight: normal;
+  margin-bottom: 5px;
 }
 
+/* Seções do formulário */
 .form-section {
-    display: none;
+  display: none;
 }
 
 .form-section.active {
-    display: block;
+  display: block;
 }
 
+/* Barra de progresso */
 #progress-bar {
-    width: 100%;
-    height: 10px;
-    background: #ddd;
-    border-radius: 10px;
-    margin-bottom: 30px;
-    overflow: hidden;
+  width: 100%;
+  height: 10px;
+  background: #ddd;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  overflow: hidden;
 }
 
 #progress {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #6a11cb, #2575fc);
-    transition: width 0.4s ease;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #6a11cb, #2575fc);
+  transition: width 0.4s ease;
 }
 
+/* Botões */
 .buttons {
-    margin-top: 25px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  margin-top: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 button {
-    background: #4a3fbd;
-    color: #fff;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    /* Removendo efeitos de movimento */
-    transition: background-color 0.3s ease;
-    box-shadow: none;
-    transform: none;
-    flex: 1;
-    margin: 5px;
+  background: #4a3fbd;
+  color: #fff;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  flex: 1;
+  margin: 5px;
+  box-shadow: none;
+  transform: none;
 }
 
 button:hover:not(:disabled) {
-    background-color: #362f8a;
+  background-color: #362f8a;
+  transform: translateY(-2px);
 }
 
 button:disabled {
-    background: #999;
-    cursor: not-allowed;
+  background: #999;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
+/* Responsividade para telas menores */
 @media (max-width: 600px) {
-    .container {
-        padding: 20px;
-    }
+  .container {
+    padding: 20px;
+  }
 
-    .buttons {
-        flex-direction: column;
-    }
+  .buttons {
+    flex-direction: column;
+  }
 
-    button {
-        width: 100%;
-        margin: 5px 0;
-    }
+  button {
+    width: 100%;
+    margin: 5px 0;
+  }
+}
+
+/* Classe para destacar campos inválidos */
+input.invalid, textarea.invalid, select.invalid {
+  border-color: #e53935;
+  background-color: #ffebee;
 }

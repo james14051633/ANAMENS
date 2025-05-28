@@ -3,52 +3,48 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ficha de Anamnese </title>
+  <title>Ficha de Anamnese - Terapia Ocupacional</title>
+
+  <!-- Fontes elegantes -->
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+
   <link rel="stylesheet" href="styles.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
   <script src="https://unpkg.com/jspdf-autotable@3.5.3/dist/jspdf.plugin.autotable.js"></script>
 </head>
 <body>
   <div class="container">
-    <h1>Ficha de Anamnese</h1>
+    <h1>Ficha de Anamnese - Terapia Ocupacional</h1>
     <div id="progress-bar">
       <div id="progress"></div>
     </div>
 
     <form id="anamnese-form">
-      <!-- Seção 1 -->
+      <!-- Seções do formulário -->
       <section class="form-section active">
         <h2>1. Informações Pessoais</h2>
         <label for="nome">Nome completo:</label>
         <input type="text" id="nome" name="nome" required />
-
         <label for="data-nascimento">Data de nascimento:</label>
         <input type="date" id="data-nascimento" name="data-nascimento" required />
-
         <label for="telefone">Telefone:</label>
         <input type="tel" id="telefone" name="telefone" />
-
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" />
       </section>
 
-      <!-- Seção 2 -->
       <section class="form-section">
         <h2>2. Histórico de Saúde</h2>
         <label for="doencas">Doenças prévias ou atuais:</label>
         <textarea id="doencas" name="doencas" rows="3"></textarea>
-
         <label for="medicacoes">Medicações em uso:</label>
         <textarea id="medicacoes" name="medicacoes" rows="3"></textarea>
-
         <label for="alergias">Alergias:</label>
         <textarea id="alergias" name="alergias" rows="2"></textarea>
       </section>
 
-      <!-- Seção 3 -->
       <section class="form-section">
         <h2>3. Avaliação das AVDs e Habilidades</h2>
-
         <label>Você apresenta dificuldades nas seguintes atividades? (Marque as que se aplicam)</label>
         <div class="checkbox-group">
           <label><input type="checkbox" name="dificuldades" value="Alimentação" /> Alimentação</label>
@@ -58,25 +54,20 @@
           <label><input type="checkbox" name="dificuldades" value="Comunicação" /> Comunicação</label>
           <label><input type="checkbox" name="dificuldades" value="Socialização" /> Socialização</label>
         </div>
-
         <label for="habilidades-motoras">Habilidades motoras finas e grossas (descreva):</label>
         <textarea id="habilidades-motoras" name="habilidades-motoras" rows="4"></textarea>
-
         <label for="aspectos-cognitivos">Aspectos cognitivos relevantes:</label>
         <textarea id="aspectos-cognitivos" name="aspectos-cognitivos" rows="4"></textarea>
       </section>
 
-      <!-- Seção 4 -->
       <section class="form-section">
         <h2>4. Aspectos Psicossociais</h2>
         <label for="situacao-familiar">Situação familiar:</label>
         <textarea id="situacao-familiar" name="situacao-familiar" rows="3"></textarea>
-
         <label for="rede-apoio">Rede de apoio (familiares, amigos, profissionais):</label>
         <textarea id="rede-apoio" name="rede-apoio" rows="3"></textarea>
       </section>
 
-      <!-- Seção 5 -->
       <section class="form-section">
         <h2>5. Avaliação Sensorial</h2>
         <label for="hiperatividade-sensorial">Hiperatividade sensorial:</label>
@@ -87,7 +78,6 @@
           <option value="moderada">Moderada</option>
           <option value="severa">Severa</option>
         </select>
-
         <label for="hipoatividade-sensorial">Hipoatividade sensorial:</label>
         <select id="hipoatividade-sensorial" name="hipoatividade-sensorial" required>
           <option value="" disabled selected>Selecione</option>
@@ -96,12 +86,10 @@
           <option value="moderada">Moderada</option>
           <option value="severa">Severa</option>
         </select>
-
         <label for="sensibilidade-tatil">Sensibilidade tátil (descrição):</label>
         <textarea id="sensibilidade-tatil" name="sensibilidade-tatil" rows="3"></textarea>
       </section>
 
-      <!-- Seção 6 -->
       <section class="form-section">
         <h2>6. Comunicação e Linguagem</h2>
         <label for="comunicacao-verbal">Comunicação verbal:</label>
@@ -111,17 +99,14 @@
           <option value="limitada">Limitada</option>
           <option value="ausente">Ausente</option>
         </select>
-
         <label for="uso-tecnologias">Uso de tecnologias assistivas:</label>
         <textarea id="uso-tecnologias" name="uso-tecnologias" rows="3" placeholder="Ex: tablets, softwares, dispositivos"></textarea>
       </section>
 
-      <!-- Seção 7 -->
       <section class="form-section">
         <h2>7. Comportamento e Emoções</h2>
         <label for="comportamento">Comportamento observado:</label>
         <textarea id="comportamento" name="comportamento" rows="4"></textarea>
-
         <label for="emocao">Expressão emocional:</label>
         <select id="emocao" name="emocao" required>
           <option value="" disabled selected>Selecione</option>
@@ -131,17 +116,14 @@
         </select>
       </section>
 
-      <!-- Seção 8 -->
       <section class="form-section">
         <h2>8. Histórico Familiar</h2>
         <label for="condicoes-familiares">Condições médicas na família:</label>
         <textarea id="condicoes-familiares" name="condicoes-familiares" rows="3"></textarea>
-
         <label for="apoio-familiar">Rede de apoio familiar:</label>
         <textarea id="apoio-familiar" name="apoio-familiar" rows="3"></textarea>
       </section>
 
-      <!-- Seção 9 -->
       <section class="form-section">
         <h2>9. Objetivos Terapêuticos</h2>
         <label for="objetivos">Quais são os principais objetivos do tratamento?</label>

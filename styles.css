@@ -47,7 +47,7 @@ input[type="text"],
 input[type="date"],
 input[type="tel"],
 input[type="email"],
-textarea {
+textarea, select {
     width: 100%;
     padding: 12px;
     margin-top: 5px;
@@ -61,7 +61,7 @@ input[type="text"]:focus,
 input[type="date"]:focus,
 input[type="tel"]:focus,
 input[type="email"]:focus,
-textarea:focus {
+textarea:focus, select:focus {
     outline: none;
     border-color: #4a3fbd;
 }

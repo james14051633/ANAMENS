@@ -1,148 +1,149 @@
-/* Reset de estilos para garantir consistência entre navegadores */
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
-    color: #333;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
 }
 
 .container {
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    max-width: 700px;
-    width: 100%;
-    padding: 30px;
-    margin-bottom: 40px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  max-width: 700px;
+  width: 100%;
+  padding: 30px;
+  margin-bottom: 40px;
 }
 
 h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #4a3fbd;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #4a3fbd;
 }
 
 h2 {
-    color: #4a3fbd;
-    margin-bottom: 20px;
+  color: #4a3fbd;
+  margin-bottom: 20px;
 }
 
 label {
-    display: block;
-    margin-top: 10px;
-    font-weight: 600;
+  display: block;
+  margin-top: 10px;
+  font-weight: 600;
 }
 
-input[type="text"],
-input[type="date"],
-input[type="tel"],
-input[type="email"],
-textarea, select {
-    width: 100%;
-    padding: 12px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 16px;
-    transition: border-color 0.3s ease;
+input[type='text'],
+input[type='date'],
+input[type='tel'],
+input[type='email'],
+textarea,
+select {
+  width: 100%;
+  padding: 12px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
 }
 
-input[type="text"]:focus,
-input[type="date"]:focus,
-input[type="tel"]:focus,
-input[type="email"]:focus,
-textarea:focus, select:focus {
-    outline: none;
-    border-color: #4a3fbd;
+input[type='text']:focus,
+input[type='date']:focus,
+input[type='tel']:focus,
+input[type='email']:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #4a3fbd;
 }
 
 .checkbox-group {
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
 }
 
 .checkbox-group label {
-    font-weight: normal;
-    margin-bottom: 5px;
+  font-weight: normal;
+  margin-bottom: 5px;
 }
 
 .form-section {
-    display: none;
+  display: none;
 }
 
 .form-section.active {
-    display: block;
+  display: block;
 }
 
 #progress-bar {
-    width: 100%;
-    height: 10px;
-    background: #ddd;
-    border-radius: 10px;
-    margin-bottom: 30px;
-    overflow: hidden;
+  width: 100%;
+  height: 10px;
+  background: #ddd;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  overflow: hidden;
 }
 
 #progress {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #6a11cb, #2575fc);
-    transition: width 0.4s ease;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #6a11cb, #2575fc);
+  transition: width 0.4s ease;
 }
 
 .buttons {
-    margin-top: 25px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center; /* Alinha verticalmente os botões */
+  margin-top: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 button {
-    background: #4a3fbd;
-    color: #fff;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    /* Flexbox properties para ocupar todo o espaço disponível */
-    flex: 1;
-    margin: 5px;
-}
-
-button:disabled {
-    background: #999;
-    cursor: not-allowed;
+  background: #4a3fbd;
+  color: #fff;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  flex: 1;
+  margin: 5px;
+  box-shadow: none;
+  transform: none;
 }
 
 button:hover:not(:disabled) {
-    background: #362f8a;
+  background-color: #362f8a;
 }
 
-/* Media query para telas menores */
+button:disabled {
+  background: #999;
+  cursor: not-allowed;
+}
+
 @media (max-width: 600px) {
-    .container {
-        padding: 20px;
-    }
+  .container {
+    padding: 20px;
+  }
 
-    .buttons {
-        flex-direction: column;
-    }
+  .buttons {
+    flex-direction: column;
+  }
 
-    button {
-        width: 100%;
-        margin: 5px 0; /* Ajusta a margem quando os botões estão empilhados */
-    }
+  button {
+    width: 100%;
+    margin: 5px 0;
+  }
 }

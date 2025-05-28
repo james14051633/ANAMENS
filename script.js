@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 data.push([label, value]);
             });
 
-            // Para a seção de protocolos, coletar os selecionados
+            // Para a seção de protocolos, juntar os selecionados
             if (section.querySelector('h2').innerText === '9. Protocolos Utilizados') {
                 const protocolosSelecionados = [];
                 const protocolosCheckboxes = section.querySelectorAll('input[name="protocolos"]:checked');

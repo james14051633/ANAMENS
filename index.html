@@ -6,6 +6,7 @@
     <title>Ficha de Anamnese - Terapia Ocupacional</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/jspdf-autotable@3.5.3/dist/jspdf.plugin.autotable.js"></script>
 </head>
 <body>
     <div class="container">
@@ -75,11 +76,76 @@
                 <textarea id="rede-apoio" name="rede-apoio" rows="3"></textarea>
             </section>
 
-            <!-- Seção 5: Observações Finais -->
+              <!-- Seção 5: Avaliação Sensorial -->
             <section class="form-section">
-                <h2>5. Observações Finais</h2>
-                <label for="observacoes">Informações adicionais relevantes:</label>
-                <textarea id="observacoes" name="observacoes" rows="5"></textarea>
+              <h2>5. Avaliação Sensorial</h2>
+              <label for="hiperatividade-sensorial">Hiperatividade sensorial:</label>
+              <select id="hiperatividade-sensorial" name="hiperatividade-sensorial" required>
+                <option value="" disabled selected>Selecione</option>
+                <option value="nenhuma">Nenhuma</option>
+                <option value="leve">Leve</option>
+                <option value="moderada">Moderada</option>
+                <option value="severa">Severa</option>
+              </select>
+
+              <label for="hipoatividade-sensorial">Hipoatividade sensorial:</label>
+              <select id="hipoatividade-sensorial" name="hipoatividade-sensorial" required>
+                <option value="" disabled selected>Selecione</option>
+                <option value="nenhuma">Nenhuma</option>
+                <option value="leve">Leve</option>
+                <option value="moderada">Moderada</option>
+                <option value="severa">Severa</option>
+              </select>
+
+              <label for="sensibilidade-tatil">Sensibilidade tátil (descrição):</label>
+              <textarea id="sensibilidade-tatil" name="sensibilidade-tatil" rows="3"></textarea>
+            </section>
+
+            <!-- Seção 6: Comunicação e Linguagem -->
+            <section class="form-section">
+              <h2>6. Comunicação e Linguagem</h2>
+              <label for="comunicacao-verbal">Comunicação verbal:</label>
+              <select id="comunicacao-verbal" name="comunicacao-verbal" required>
+                <option value="" disabled selected>Selecione</option>
+                <option value="funcional">Funcional</option>
+                <option value="limitada">Limitada</option>
+                <option value="ausente">Ausente</option>
+              </select>
+
+              <label for="uso-tecnologias">Uso de tecnologias assistivas:</label>
+              <textarea id="uso-tecnologias" name="uso-tecnologias" rows="3" placeholder="Ex: tablets, softwares, dispositivos"></textarea>
+            </section>
+
+            <!-- Seção 7: Comportamento e Emoções -->
+            <section class="form-section">
+              <h2>7. Comportamento e Emoções</h2>
+              <label for="comportamento">Comportamento observado:</label>
+              <textarea id="comportamento" name="comportamento" rows="4"></textarea>
+
+              <label for="emocao">Expressão emocional:</label>
+              <select id="emocao" name="emocao" required>
+                <option value="" disabled selected>Selecione</option>
+                <option value="estavel">Estável</option>
+                <option value="variavel">Variável</option>
+                <option value="instavel">Instável</option>
+              </select>
+            </section>
+
+            <!-- Seção 8: Histórico Familiar -->
+            <section class="form-section">
+              <h2>8. Histórico Familiar</h2>
+              <label for="condicoes-familiares">Condições médicas na família:</label>
+              <textarea id="condicoes-familiares" name="condicoes-familiares" rows="3"></textarea>
+
+              <label for="apoio-familiar">Rede de apoio familiar:</label>
+              <textarea id="apoio-familiar" name="apoio-familiar" rows="3"></textarea>
+            </section>
+
+            <!-- Seção 9: Objetivos Terapêuticos -->
+            <section class="form-section">
+              <h2>9. Objetivos Terapêuticos</h2>
+              <label for="objetivos">Quais são os principais objetivos do tratamento?</label>
+              <textarea id="objetivos" name="objetivos" rows="4"></textarea>
             </section>
 
             <div class="buttons">
@@ -87,6 +153,7 @@
                 <button type="button" id="next-btn">Próximo</button>
                 <button type="submit" id="submit-btn" style="display:none;">Enviar</button>
                 <button type="button" id="print-btn" style="display:none; background:#5cb85c;">Imprimir PDF</button>
+                 <button type="button" id="printButton">Imprimir Ficha</button>
             </div>
         </form>
     </div>
@@ -94,4 +161,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-

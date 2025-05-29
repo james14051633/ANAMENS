@@ -51,266 +51,290 @@ const modelos = {
   ]
 };
 
-function createCOPMForm(containerId) {
-  const container = document.getElementById(containerId);
-  if (!container) {
-    console.error(`Elemento com id "${containerId}" não encontrado.`);
-    return;
-  }
+const sidebarButtons = document.querySelectorAll('.sidebar button');
+const formContainer = document.getElementById('form-container');
+const protocolTitle = document.getElementById('protocol-title');
+const clearBtn = document.getElementById('clear-btn');
 
-  container.innerHTML = '';
+let currentProtocol = 'denver_ii';
 
-  const form = document.createElement("form");
-  form.id = "copmForm";
+function createStandardForm(fields) {
+  formContainer.innerHTML = '';
+
+  const form = document.createElement('form');
+  form.id = 'standard-form';
+
+  fields.forEach(field => {
+    const label = document.createElement('label');
+    label.htmlFor = field.name;
+    label.textContent = field.label + (field.required ? ' *' : '');
+    form.appendChild(label);
+
+    let input;
+    if (field.type === 'textarea') {
+      input = document.createElement('textarea');
+      input.rows = 4;
+    } else if (field.type === 'select') {
+      input = document.createElement('select');
+      field.options.forEach(opt => {
+        const option = document.createElement('option');
+        option.value = opt;
+        option.textContent = opt;
+        input.appendChild(option);
+      });
+    } else {
+      input = document.createElement('input');
+      input.type = field.type;
+      if (field.min !== undefined) input.min = field.min;
+      if (field.max !== undefined) input.max = field.max;
+    }
+    input.name = field.name;
+    input.id = field.name;
+    if (field.required) input.required = true;
+
+    form.appendChild(input);
+  });
+
+  const submitBtn = document.createElement('button');
+  submitBtn.type = 'submit';
+  submitBtn.textContent = 'Salvar';
+  form.appendChild(submitBtn);
+
+  formContainer.appendChild(form);
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!validateForm(fields, form)) return;
+    saveFormData(currentProtocol, fields, form);
+    alert('Dados salvos com sucesso!');
+  });
+
+  loadFormData(currentProtocol, fields, form);
+}
+
+function createCOPMForm() {
+  formContainer.innerHTML = '';
+
+  const form = document.createElement('form');
+  form.id = 'copm-form';
 
   modelos.copm.forEach((section, i) => {
-    const sectionDiv = document.createElement("div");
-    sectionDiv.style.border = "1px solid #ddd";
-    sectionDiv.style.padding = "10px";
-    sectionDiv.style.marginBottom = "15px";
+    const sectionDiv = document.createElement('div');
+    sectionDiv.classList.add('copm-section');
 
-    const title = document.createElement("h2");
+    const title = document.createElement('h2');
     title.textContent = section.category;
     sectionDiv.appendChild(title);
 
-    // Pergunta 1 - texto
-    const q1Label = document.createElement("label");
-    q1Label.setAttribute("for", `activity_${i}`);
-    q1Label.textContent = section.questions[0];
-    sectionDiv.appendChild(q1Label);
+    // Activity text input
+    const activityLabel = document.createElement('label');
+    activityLabel.htmlFor = `activity_${i}`;
+    activityLabel.textContent = section.questions[0];
+    sectionDiv.appendChild(activityLabel);
 
-    const q1Input = document.createElement("input");
-    q1Input.type = "text";
-    q1Input.id = `activity_${i}`;
-    q1Input.name = `activity_${i}`;
-    q1Input.required = true;
-    sectionDiv.appendChild(q1Input);
+    const activityInput = document.createElement('input');
+    activityInput.type = 'text';
+    activityInput.id = `activity_${i}`;
+    activityInput.name = `activity_${i}`;
+    activityInput.required = true;
+    sectionDiv.appendChild(activityInput);
 
-    // Pergunta 2 - número
-    const q2Label = document.createElement("label");
-    q2Label.setAttribute("for", `performance_${i}`);
-    q2Label.textContent = section.questions[1];
-    sectionDiv.appendChild(q2Label);
+    // Performance number input
+    const perfLabel = document.createElement('label');
+    perfLabel.htmlFor = `performance_${i}`;
+    perfLabel.textContent = section.questions[1];
+    sectionDiv.appendChild(perfLabel);
 
-    const q2Input = document.createElement("input");
-    q2Input.type = "number";
-    q2Input.id = `performance_${i}`;
-    q2Input.name = `performance_${i}`;
-    q2Input.min = 1;
-    q2Input.max = 10;
-    q2Input.required = true;
-    sectionDiv.appendChild(q2Input);
+    const perfInput = document.createElement('input');
+    perfInput.type = 'number';
+    perfInput.id = `performance_${i}`;
+    perfInput.name = `performance_${i}`;
+    perfInput.min = 1;
+    perfInput.max = 10;
+    perfInput.required = true;
+    sectionDiv.appendChild(perfInput);
 
-    // Pergunta 3 - número
-    const q3Label = document.createElement("label");
-    q3Label.setAttribute("for", `satisfaction_${i}`);
-    q3Label.textContent = section.questions[2];
-    sectionDiv.appendChild(q3Label);
+    // Satisfaction number input
+    const satLabel = document.createElement('label');
+    satLabel.htmlFor = `satisfaction_${i}`;
+    satLabel.textContent = section.questions[2];
+    sectionDiv.appendChild(satLabel);
 
-    const q3Input = document.createElement("input");
-    q3Input.type = "number";
-    q3Input.id = `satisfaction_${i}`;
-    q3Input.name = `satisfaction_${i}`;
-    q3Input.min = 1;
-    q3Input.max = 10;
-    q3Input.required = true;
-    sectionDiv.appendChild(q3Input);
+    const satInput = document.createElement('input');
+    satInput.type = 'number';
+    satInput.id = `satisfaction_${i}`;
+    satInput.name = `satisfaction_${i}`;
+    satInput.min = 1;
+    satInput.max = 10;
+    satInput.required = true;
+    sectionDiv.appendChild(satInput);
 
     form.appendChild(sectionDiv);
   });
 
-  const submitBtn = document.createElement("button");
-  submitBtn.type = "submit";
-  submitBtn.textContent = "Enviar";
+  const submitBtn = document.createElement('button');
+  submitBtn.type = 'submit';
+  submitBtn.textContent = 'Enviar';
   form.appendChild(submitBtn);
 
-  const resultDiv = document.createElement("div");
-  resultDiv.id = "result";
-  resultDiv.style.marginTop = "20px";
-  resultDiv.style.padding = "15px";
-  resultDiv.style.border = "1px solid #ccc";
-  resultDiv.style.background = "#f9f9f9";
-  resultDiv.style.display = "none";
+  const resultDiv = document.createElement('div');
+  resultDiv.id = 'result';
+  resultDiv.style.display = 'none';
+  form.appendChild(resultDiv);
 
-  container.appendChild(form);
-  container.appendChild(resultDiv);
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    let valid = true;
-    const errors = [];
-
-    modelos.copm.forEach((section, i) => {
-      const activity = form[`activity_${i}`].value.trim();
-      const performance = Number(form[`performance_${i}`].value);
-      const satisfaction = Number(form[`satisfaction_${i}`].value);
-
-      if (!activity) {
-        valid = false;
-        errors.push(`Atividade em "${section.category}" é obrigatória.`);
-      }
-      if (!(performance >= 1 && performance <= 10)) {
-        valid = false;
-        errors.push(`Desempenho em "${section.category}" deve ser entre 1 e 10.`);
-      }
-      if (!(satisfaction >= 1 && satisfaction <= 10)) {
-        valid = false;
-        errors.push(`Satisfação em "${section.category}" deve ser entre 1 e 10.`);
-      }
-    });
-
-    if (!valid) {
-      resultDiv.style.display = "block";
-      resultDiv.style.color = "red";
-      resultDiv.innerHTML = errors.map(e => `<p>${e}</p>`).join("");
-      return;
-    }
-
-    let output = "<h3>Resultados da Ficha COPM:</h3>";
-    modelos.copm.forEach((section, i) => {
-      output += `<h4>${section.category}</h4>`;
-      output += `<p><strong>Atividade:</strong> ${form[`activity_${i}`].value}</p>`;
-      output += `<p><strong>Desempenho:</strong> ${form[`performance_${i}`].value}</p>`;
-      output += `<p><strong>Satisfação:</strong> ${form[`satisfaction_${i}`].value}</p>`;
-    });
-
-    resultDiv.style.display = "block";
-    resultDiv.style.color = "black";
-    resultDiv.innerHTML = output;
-  });
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  const modeloSelect = document.getElementById('modelo');
-  const form = document.getElementById('ficha-form');
-  const formContent = document.getElementById('form-content');
-  const limparBtn = document.getElementById('limpar-btn');
-
-  modeloSelect.addEventListener('change', () => {
-    const modelo = modeloSelect.value;
-    formContent.innerHTML = '';
-    if (!modelo || !modelos[modelo]) {
-      form.style.display = 'none';
-      limparBtn.style.display = 'none';
-      return;
-    }
-
-    if(modelo === 'copm') {
-      form.style.display = 'none';
-      limparBtn.style.display = 'inline-block';
-      createCOPMForm('form-content');
-      return;
-    }
-
-    form.style.display = 'block';
-    limparBtn.style.display = 'inline-block';
-
-    modelos[modelo].forEach(campo => {
-      const label = document.createElement('label');
-      label.htmlFor = campo.name;
-      label.textContent = campo.label + (campo.required ? '*' : '');
-      formContent.appendChild(label);
-
-      let input;
-      if (campo.type === 'textarea') {
-        input = document.createElement('textarea');
-        input.rows = 4;
-      } else if (campo.type === 'select') {
-        input = document.createElement('select');
-        campo.options.forEach(opt => {
-          const option = document.createElement('option');
-          option.value = opt;
-          option.textContent = opt;
-          input.appendChild(option);
-        });
-      } else {
-        input = document.createElement('input');
-        input.type = campo.type;
-        if (campo.min !== undefined) input.min = campo.min;
-        if (campo.max !== undefined) input.max = campo.max;
-      }
-      input.name = campo.name;
-      input.id = campo.name;
-      if (campo.required) input.required = true;
-      formContent.appendChild(input);
-    });
-
-    carregarDados(modelo);
-  });
-
-  function salvarDados(modelo) {
-    const dados = {};
-    modelos[modelo].forEach(campo => {
-      const el = document.getElementById(campo.name);
-      if (el) dados[campo.name] = el.value;
-    });
-    localStorage.setItem('ficha_' + modelo, JSON.stringify(dados));
-  }
-
-  function carregarDados(modelo) {
-    const dadosSalvos = localStorage.getItem('ficha_' + modelo);
-    if (!dadosSalvos) return;
-    const dados = JSON.parse(dadosSalvos);
-    modelos[modelo].forEach(campo => {
-      const el = document.getElementById(campo.name);
-      if (el && dados[campo.name]) el.value = dados[campo.name];
-    });
-  }
-
-  limparBtn.addEventListener('click', () => {
-    const modelo = modeloSelect.value;
-    if (!modelo) return;
-    localStorage.removeItem('ficha_' + modelo);
-    modelos[modelo].forEach(campo => {
-      const el = document.getElementById(campo.name);
-      if (el) el.value = '';
-    });
-    alert('Dados limpos!');
-  });
+  formContainer.appendChild(form);
 
   form.addEventListener('submit', e => {
     e.preventDefault();
-    const modelo = modeloSelect.value;
-    if (!modelo) {
-      alert('Selecione um modelo de ficha.');
-      return;
-    }
-
-    let valido = true;
-    let mensagensErro = [];
-
-    modelos[modelo].forEach(campo => {
-      const el = document.getElementById(campo.name);
-      if (campo.required && el) {
-        if (!el.value.trim()) {
-          el.classList.add('invalid');
-          valido = false;
-          mensagensErro.push(`O campo "${campo.label}" é obrigatório.`);
-        } else {
-          el.classList.remove('invalid');
-        }
-      }
-      if (campo.type === 'number' && el && el.value) {
-        const valor = Number(el.value);
-        if (campo.min !== undefined && valor < campo.min) {
-          el.classList.add('invalid');
-          valido = false;
-          mensagensErro.push(`O campo "${campo.label}" deve ser maior ou igual a ${campo.min}.`);
-        }
-        if (campo.max !== undefined && valor > campo.max) {
-          el.classList.add('invalid');
-          valido = false;
-          mensagensErro.push(`O campo "${campo.label}" deve ser menor ou igual a ${campo.max}.`);
-        }
-      }
-    });
-
-    if (!valido) {
-      alert(mensagensErro.join('\n'));
-      return;
-    }
-
-    salvarDados(modelo);
+    const valid = validateCOPMForm(form);
+    if (!valid) return;
+    saveCOPMForm(form);
     alert('Dados salvos com sucesso!');
   });
+
+  loadCOPMForm();
+}
+
+function validateForm(fields, form) {
+  let valid = true;
+  let messages = [];
+  fields.forEach(field => {
+    const input = form[field.name];
+    if (!input) return;
+    if (field.required && !input.value.trim()) {
+      valid = false;
+      input.classList.add('invalid');
+      messages.push(`O campo "${field.label}" é obrigatório.`);
+    } else {
+      input.classList.remove('invalid');
+    }
+    if (field.type === 'number' && input.value) {
+      const val = Number(input.value);
+      if (field.min !== undefined && val < field.min) {
+        valid = false;
+        input.classList.add('invalid');
+        messages.push(`O campo "${field.label}" deve ser maior ou igual a ${field.min}.`);
+      }
+      if (field.max !== undefined && val > field.max) {
+        valid = false;
+        input.classList.add('invalid');
+        messages.push(`O campo "${field.label}" deve ser menor ou igual a ${field.max}.`);
+      }
+    }
+  });
+  if (!valid) alert(messages.join('\n'));
+  return valid;
+}
+
+function saveFormData(protocol, fields, form) {
+  const data = {};
+  fields.forEach(field => {
+    const input = form[field.name];
+    if (input) data[field.name] = input.value;
+  });
+  localStorage.setItem(`formData_${protocol}`, JSON.stringify(data));
+}
+
+function loadFormData(protocol, fields, form) {
+  const dataRaw = localStorage.getItem(`formData_${protocol}`);
+  if (!dataRaw) return;
+  const data = JSON.parse(dataRaw);
+  fields.forEach(field => {
+    const input = form[field.name];
+    if (input && data[field.name]) {
+      input.value = data[field.name];
+    }
+  });
+}
+
+function validateCOPMForm(form) {
+  let valid = true;
+  let messages = [];
+  modelos.copm.forEach((section, i) => {
+    const activity = form[`activity_${i}`];
+    const performance = form[`performance_${i}`];
+    const satisfaction = form[`satisfaction_${i}`];
+
+    if (!activity.value.trim()) {
+      valid = false;
+      activity.classList.add('invalid');
+      messages.push(`Atividade em "${section.category}" é obrigatória.`);
+    } else {
+      activity.classList.remove('invalid');
+    }
+    const perfVal = Number(performance.value);
+    if (!(perfVal >= 1 && perfVal <= 10)) {
+      valid = false;
+      performance.classList.add('invalid');
+      messages.push(`Desempenho em "${section.category}" deve ser entre 1 e 10.`);
+    } else {
+      performance.classList.remove('invalid');
+    }
+    const satVal = Number(satisfaction.value);
+    if (!(satVal >= 1 && satVal <= 10)) {
+      valid = false;
+      satisfaction.classList.add('invalid');
+      messages.push(`Satisfação em "${section.category}" deve ser entre 1 e 10.`);
+    } else {
+      satisfaction.classList.remove('invalid');
+    }
+  });
+  if (!valid) alert(messages.join('\n'));
+  return valid;
+}
+
+function saveCOPMForm(form) {
+  const data = {};
+  modelos.copm.forEach((section, i) => {
+    data[`activity_${i}`] = form[`activity_${i}`].value;
+    data[`performance_${i}`] = form[`performance_${i}`].value;
+    data[`satisfaction_${i}`] = form[`satisfaction_${i}`].value;
+  });
+  localStorage.setItem('formData_copm', JSON.stringify(data));
+}
+
+function loadCOPMForm() {
+  const dataRaw = localStorage.getItem('formData_copm');
+  if (!dataRaw) return;
+  const data = JSON.parse(dataRaw);
+  const form = document.getElementById('copm-form');
+  if (!form) return;
+  modelos.copm.forEach((section, i) => {
+    if (data[`activity_${i}`]) form[`activity_${i}`].value = data[`activity_${i}`];
+    if (data[`performance_${i}`]) form[`performance_${i}`].value = data[`performance_${i}`];
+    if (data[`satisfaction_${i}`]) form[`satisfaction_${i}`].value = data[`satisfaction_${i}`];
+  });
+}
+
+function renderProtocol(protocol) {
+  currentProtocol = protocol;
+  protocolTitle.textContent = {
+    denver_ii: 'Denver II',
+    checklist_denver: 'Checklist Denver',
+    copm: 'COPM'
+  }[protocol] || '';
+
+  if (protocol === 'copm') {
+    createCOPMForm();
+  } else {
+    createStandardForm(modelos[protocol]);
+  }
+}
+
+sidebarButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    sidebarButtons.forEach(btn => btn.classList.remove('active'));
+    button.classList.add('active');
+    renderProtocol(button.dataset.protocol);
+  });
 });
+
+clearBtn.addEventListener('click', () => {
+  if (confirm('Deseja realmente limpar os dados deste protocolo?')) {
+    localStorage.removeItem(`formData_${currentProtocol}`);
+    renderProtocol(currentProtocol);
+  }
+});
+
+// Inicializa com Denver II
+renderProtocol(currentProtocol);

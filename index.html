@@ -1,84 +1,40 @@
-body {
-  font-family: 'Roboto', sans-serif;
-  background: linear-gradient(270deg, #6a11cb, #2575fc, #6a11cb);
-  background-size: 600% 600%;
-  animation: gradientShift 30s ease infinite;
-  color: #333;
-  min-height: 100vh;
-  padding: 20px;
-  display: flex;
-  justify-content: center;
-}
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-@keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
-  }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ficha de Anamnese Dinâmica</title>
 
-  50% {
-    background-position: 100% 50%;
-  }
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Montserrat&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 
-  100% {
-    background-position: 0% 50%;
-  }
-}
+  <!-- jsPDF e plugin -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="https://unpkg.com/jspdf-autotable@3.5.3/dist/jspdf.plugin.autotable.js"></script>
+</head>
 
-.container {
-  background: white;
-  padding: 30px;
-  border-radius: 12px;
-  max-width: 700px;
-  width: 100%;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
+<body>
+  <div class="container">
+    <h1>Ficha de Anamnese Dinâmica</h1>
 
-h1 {
-  text-align: center;
-  color: #4a3fbd;
-  margin-bottom: 20px;
-  font-family: 'Montserrat', sans-serif;
-}
+    <label for="modelo">Escolha o modelo da ficha:</label>
+    <select id="modelo">
+      <option value="">-- Selecione --</option>
+      <option value="pediatrica">Ficha Pediátrica</option>
+      <option value="adulto">Ficha Adulto</option>
+      <option value="especial">Ficha Necessidades Especiais</option>
+    </select>
 
-label {
-  display: block;
-  margin-top: 15px;
-  font-weight: 600;
-}
+    <button id="limpar-btn" style="margin-top: 10px; display:none;">Limpar Dados</button>
 
-select,
-input[type="text"],
-input[type="date"],
-textarea {
-  width: 100%;
-  padding: 12px;
-  margin-top: 5px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-  resize: vertical;
-}
+    <form id="ficha-form" style="display:none;">
+      <div id="form-content"></div>
+      <button type="submit">Salvar e Gerar PDF</button>
+    </form>
+  </div>
 
-input.invalid,
-textarea.invalid,
-select.invalid {
-  border-color: #e53935;
-  background-color: #ffebee;
-}
+  <script src="script.js"></script>
+</body>
 
-button {
-  margin-top: 25px;
-  background-color: #4a3fbd;
-  color: white;
-  border: none;
-  padding: 15px;
-  font-size: 18px;
-  border-radius: 8px;
-  cursor: pointer;
-  width: 100%;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #362f8a;
-}
+</html>

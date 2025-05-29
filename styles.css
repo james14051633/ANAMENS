@@ -1,9 +1,3 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 body {
   font-family: 'Roboto', sans-serif;
   background: linear-gradient(270deg, #6a11cb, #2575fc, #6a11cb);
@@ -31,30 +25,19 @@ body {
 }
 
 .container {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  max-width: 800px;
-  width: 100%;
+  background: white;
   padding: 30px;
-  overflow-y: auto;
-  max-height: 90vh;
+  border-radius: 12px;
+  max-width: 700px;
+  width: 100%;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 h1 {
   text-align: center;
-  margin-bottom: 30px;
   color: #4a3fbd;
+  margin-bottom: 20px;
   font-family: 'Montserrat', sans-serif;
-}
-
-h2 {
-  color: #4a3fbd;
-  margin-top: 30px;
-  margin-bottom: 15px;
-  font-family: 'Montserrat', sans-serif;
-  border-bottom: 2px solid #4a3fbd;
-  padding-bottom: 5px;
 }
 
 label {
@@ -63,76 +46,39 @@ label {
   font-weight: 600;
 }
 
+select,
 input[type="text"],
 input[type="date"],
-input[type="tel"],
-input[type="email"],
-textarea,
-select {
+textarea {
   width: 100%;
   padding: 12px;
   margin-top: 5px;
-  border: 1px solid #ccc;
   border-radius: 6px;
+  border: 1px solid #ccc;
   font-size: 16px;
-  transition: border-color 0.3s ease;
   resize: vertical;
 }
 
-input[type="text"]:focus,
-input[type="date"]:focus,
-input[type="tel"]:focus,
-input[type="email"]:focus,
-textarea:focus,
-select:focus {
-  outline: none;
-  border-color: #4a3fbd;
-}
-
-.checkbox-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-top: 10px;
-}
-
-.checkbox-group label {
-  font-weight: normal;
-  display: flex;
-  align-items: center;
-  gap: 5px;
+input.invalid,
+textarea.invalid,
+select.invalid {
+  border-color: #e53935;
+  background-color: #ffebee;
 }
 
 button {
-  background: #4a3fbd;
+  margin-top: 25px;
+  background-color: #4a3fbd;
   color: white;
   border: none;
-  padding: 15px 30px;
+  padding: 15px;
   font-size: 18px;
   border-radius: 8px;
   cursor: pointer;
-  margin-top: 30px;
   width: 100%;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
   background-color: #362f8a;
-  transform: translateY(-2px);
-}
-
-.container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.container::-webkit-scrollbar-thumb {
-  background-color: rgba(74, 63, 189, 0.5);
-  border-radius: 4px;
-}
-
-@media (max-width: 600px) {
-  .container {
-    padding: 20px;
-    max-height: 100vh;
-  }
 }

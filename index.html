@@ -138,3 +138,42 @@
       <!-- Seção 8: Histórico Familiar -->
       <section>
         <h2>8. Histórico Familiar</h2>
+        <label for="condicoes-familiares">Condições médicas na família:</label>
+        <textarea id="condicoes-familiares" name="condicoes-familiares" rows="3"></textarea>
+
+        <label for="apoio-familiar">Rede de apoio familiar:</label>
+        <textarea id="apoio-familiar" name="apoio-familiar" rows="3"></textarea>
+      </section>
+
+      <!-- Seção 9: Protocolos Utilizados -->
+      <section>
+        <h2>9. Protocolos Utilizados</h2>
+        <p>Selecione os protocolos que serão utilizados no atendimento:</p>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="protocolos" value="Consulta" /> Consulta</label>
+          <label><input type="checkbox" name="protocolos" value="Avaliação do desempenho ocupacional" /> Avaliação do desempenho ocupacional</label>
+          <label><input type="checkbox" name="protocolos" value="Avaliação dos componentes de desempenho ocupacional" /> Avaliação dos componentes de desempenho ocupacional</label>
+          <label><input type="checkbox" name="protocolos" value="Prescrição de recursos de ajuda técnica e adaptação ambiental" /> Prescrição de recursos de ajuda técnica e adaptação ambiental</label>
+          <label><input type="checkbox" name="protocolos" value="Avaliação da acessibilidade/ergonomia" /> Avaliação da acessibilidade/ergonomia</label>
+          <label><input type="checkbox" name="protocolos" value="Reavaliação" /> Reavaliação</label>
+          <label><input type="checkbox" name="protocolos" value="Aplicação de testes" /> Aplicação de testes</label>
+          <label><input type="checkbox" name="protocolos" value="Outras avaliações" /> Outras avaliações</label>
+        </div>
+      </section>
+
+      <!-- Seção 10: Objetivos Terapêuticos -->
+      <section>
+        <h2>10. Objetivos Terapêuticos</h2>
+        <label for="objetivos">Quais são os principais objetivos do tratamento?</label>
+        <textarea id="objetivos" name="objetivos" rows="4"></textarea>
+      </section>
+
+      <button type="submit" id="submit-btn">Enviar e Gerar PDF</button>
+    </form>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="localStorageHelper.js"></script>
+</body>
+
+</html>

@@ -3,38 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Fichas de Terapia Ocupacional</title>
-
+  <title>Fichas de Avaliação - Terapia Ocupacional</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Montserrat&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
-
-  <!-- jsPDF e plugin -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
   <script src="https://unpkg.com/jspdf-autotable@3.5.3/dist/jspdf.plugin.autotable.js"></script>
 </head>
 <body>
   <div class="container">
-    <h1>Fichas de Terapia Ocupacional</h1>
-
+    <h1>Fichas de Avaliação - Terapia Ocupacional</h1>
     <label for="modelo">Selecione o modelo de ficha:</label>
     <select id="modelo">
       <option value="">-- Selecione --</option>
-      <option value="pediatrica">Ficha Pediátrica</option>
-      <option value="adulto">Ficha Adulto</option>
-      <option value="especial">Ficha Necessidades Especiais</option>
-      <option value="afls">AFLS - Habilidades de Vida Doméstica</option>
+      <option value="denver_ii">DENVER II - Triagem do Desenvolvimento</option>
+      <option value="checklist_denver">Checklist Denver (Autismo)</option>
+      <option value="copm">COPM - Medida Canadense de Desempenho Ocupacional</option>
+      <option value="sweaa">SWEAA - Avaliação de Deglutição e Alimentação</option>
+      <option value="ebai">EBAI - Escala Brasileira de Alimentação Infantil</option>
+      <option value="bpfas">BPFAS - Escala de Avaliação do Comportamento Alimentar Pediátrico</option>
+      <option value="alberta">Inventário de Comportamentos Adaptativos de Alberta</option>
+      <option value="escala_labirinto">Escala Labirinto de Avaliação do Comportamento Alimentar</option>
+      <option value="seletividade_alimentar">Seletividade Alimentar - Terapia Ocupacional</option>
+      <option value="triagem_ahs">Triagem de Altas Habilidades/Superdotação</option>
+      <option value="chores_t12">CHORES - Tarefas Domésticas (T12)</option>
       <option value="ahemd_is">AHEMD-IS - Escala Bebê (3-18 meses)</option>
-      <!-- Adicione mais modelos conforme necessário -->
+      <!-- Adicione outras fichas aqui -->
     </select>
-
     <button id="limpar-btn" style="display:none; margin-top:10px;">Limpar Dados</button>
-
     <form id="ficha-form" style="display:none;">
       <div id="form-content"></div>
       <button type="submit">Salvar e Gerar PDF</button>
     </form>
   </div>
-
   <script src="script.js"></script>
 </body>
 </html>

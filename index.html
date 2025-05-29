@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ficha de Anamnese com AFLS</title>
+  <title>Fichas de Terapia Ocupacional</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Montserrat&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
@@ -14,18 +14,20 @@
 </head>
 <body>
   <div class="container">
-    <h1>Ficha de Anamnese Dinâmica</h1>
+    <h1>Fichas de Terapia Ocupacional</h1>
 
-    <label for="modelo">Escolha o modelo da ficha:</label>
+    <label for="modelo">Selecione o modelo de ficha:</label>
     <select id="modelo">
       <option value="">-- Selecione --</option>
       <option value="pediatrica">Ficha Pediátrica</option>
       <option value="adulto">Ficha Adulto</option>
       <option value="especial">Ficha Necessidades Especiais</option>
       <option value="afls">AFLS - Habilidades de Vida Doméstica</option>
+      <option value="ahemd_is">AHEMD-IS - Escala Bebê (3-18 meses)</option>
+      <!-- Adicione mais modelos conforme necessário -->
     </select>
 
-    <button id="limpar-btn" style="margin-top: 10px; display:none;">Limpar Dados</button>
+    <button id="limpar-btn" style="display:none; margin-top:10px;">Limpar Dados</button>
 
     <form id="ficha-form" style="display:none;">
       <div id="form-content"></div>

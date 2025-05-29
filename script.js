@@ -48,9 +48,25 @@ const modelos = {
         "Avalie sua satisfação com seu desempenho nessa atividade (1 a 10)"
       ]
     }
+  ],
+  anamnese_to: [
+    { label: 'Nome completo', type: 'text', name: 'nome', required: true },
+    { label: 'Idade (anos)', type: 'number', name: 'idade', min: 0, max: 120, required: true },
+    { label: 'Sexo', type: 'select', name: 'sexo', required: true, options: ['Feminino', 'Masculino', 'Outro'] },
+    { label: 'Peso (kg)', type: 'number', name: 'peso', min: 0, step: 0.1, required: true },
+    { label: 'Altura (cm)', type: 'number', name: 'altura', min: 0, step: 0.1, required: true },
+    { label: 'IMC (calculado)', type: 'text', name: 'imc', required: false, readonly: true },
+    { label: 'Condições clínicas prévias', type: 'textarea', name: 'condicoes' },
+    { label: 'Medicações atuais', type: 'textarea', name: 'medicacoes' },
+    { label: 'Alergias', type: 'textarea', name: 'alergias' },
+    { label: 'Atividades diárias com dificuldade', type: 'textarea', name: 'atividade_diaria' },
+    { label: 'Escala de dor (0 a 10)', type: 'number', name: 'escala_dor', min: 0, max: 10 },
+    { label: 'Nível de estresse (0 a 10)', type: 'number', name: 'estresse', min: 0, max: 10 },
+    { label: 'Observações adicionais', type: 'textarea', name: 'observacoes' }
   ]
 };
 
+// Elementos do DOM
 const sidebarButtons = document.querySelectorAll('.sidebar button');
 const formContainer = document.getElementById('form-container');
 const protocolTitle = document.getElementById('protocol-title');
@@ -58,9 +74,9 @@ const clearBtn = document.getElementById('clear-btn');
 
 let currentProtocol = 'denver_ii';
 
+// Cria formulário padrão (denver_ii, checklist_denver e anamnese_to)
 function createStandardForm(fields) {
   formContainer.innerHTML = '';
-
   const form = document.createElement('form');
   form.id = 'standard-form';
 
@@ -87,6 +103,8 @@ function createStandardForm(fields) {
       input.type = field.type;
       if (field.min !== undefined) input.min = field.min;
       if (field.max !== undefined) input.max = field.max;
+      if (field.step !== undefined) input.step = field.step;
+      if (field.readonly) input.readOnly = true;
     }
     input.name = field.name;
     input.id = field.name;
@@ -94,6 +112,28 @@ function createStandardForm(fields) {
 
     form.appendChild(input);
   });
+
+  // Para o protocolo anamnese_to, adiciona cálculo automático do IMC
+  if (currentProtocol === 'anamnese_to') {
+    const pesoInput = form.querySelector('input[name="peso"]');
+    const alturaInput = form.querySelector('input[name="altura"]');
+    const imcInput = form.querySelector('input[name="imc"]');
+
+    function calculaIMC() {
+      const peso = parseFloat(pesoInput.value);
+      const alturaCm = parseFloat(alturaInput.value);
+      if (peso > 0 && alturaCm > 0) {
+        const alturaM = alturaCm / 100;
+        const imc = peso / (alturaM * alturaM);
+        imcInput.value = imc.toFixed(2);
+      } else {
+        imcInput.value = '';
+      }
+    }
+
+    pesoInput.addEventListener('input', calculaIMC);
+    alturaInput.addEventListener('input', calculaIMC);
+  }
 
   const submitBtn = document.createElement('button');
   submitBtn.type = 'submit';
@@ -106,94 +146,63 @@ function createStandardForm(fields) {
     e.preventDefault();
     if (!validateForm(fields, form)) return;
     saveFormData(currentProtocol, fields, form);
-    alert('Dados salvos com sucesso!');
+
+    if (currentProtocol === 'anamnese_to') {
+      mostrarResumoAnamnese(form);
+    } else {
+      alert('Dados salvos com sucesso!');
+    }
   });
 
   loadFormData(currentProtocol, fields, form);
+
+  // Se for anamnese_to e já tem dados, mostra resumo
+  if (currentProtocol === 'anamnese_to') {
+    mostrarResumoAnamnese(form);
+  }
 }
 
-function createCOPMForm() {
-  formContainer.innerHTML = '';
-
-  const form = document.createElement('form');
-  form.id = 'copm-form';
-
-  modelos.copm.forEach((section, i) => {
-    const sectionDiv = document.createElement('div');
-    sectionDiv.classList.add('copm-section');
-
-    const title = document.createElement('h2');
-    title.textContent = section.category;
-    sectionDiv.appendChild(title);
-
-    // Activity text input
-    const activityLabel = document.createElement('label');
-    activityLabel.htmlFor = `activity_${i}`;
-    activityLabel.textContent = section.questions[0];
-    sectionDiv.appendChild(activityLabel);
-
-    const activityInput = document.createElement('input');
-    activityInput.type = 'text';
-    activityInput.id = `activity_${i}`;
-    activityInput.name = `activity_${i}`;
-    activityInput.required = true;
-    sectionDiv.appendChild(activityInput);
-
-    // Performance number input
-    const perfLabel = document.createElement('label');
-    perfLabel.htmlFor = `performance_${i}`;
-    perfLabel.textContent = section.questions[1];
-    sectionDiv.appendChild(perfLabel);
-
-    const perfInput = document.createElement('input');
-    perfInput.type = 'number';
-    perfInput.id = `performance_${i}`;
-    perfInput.name = `performance_${i}`;
-    perfInput.min = 1;
-    perfInput.max = 10;
-    perfInput.required = true;
-    sectionDiv.appendChild(perfInput);
-
-    // Satisfaction number input
-    const satLabel = document.createElement('label');
-    satLabel.htmlFor = `satisfaction_${i}`;
-    satLabel.textContent = section.questions[2];
-    sectionDiv.appendChild(satLabel);
-
-    const satInput = document.createElement('input');
-    satInput.type = 'number';
-    satInput.id = `satisfaction_${i}`;
-    satInput.name = `satisfaction_${i}`;
-    satInput.min = 1;
-    satInput.max = 10;
-    satInput.required = true;
-    sectionDiv.appendChild(satInput);
-
-    form.appendChild(sectionDiv);
+// Função para exibir resumo da anamnese
+function mostrarResumoAnamnese(form) {
+  const dados = {};
+  modelos.anamnese_to.forEach(field => {
+    const input = form[field.name];
+    dados[field.name] = input ? input.value : '';
   });
 
-  const submitBtn = document.createElement('button');
-  submitBtn.type = 'submit';
-  submitBtn.textContent = 'Enviar';
-  form.appendChild(submitBtn);
-
-  const resultDiv = document.createElement('div');
+  const resultDiv = document.getElementById('result') || document.createElement('div');
   resultDiv.id = 'result';
-  resultDiv.style.display = 'none';
-  form.appendChild(resultDiv);
+  resultDiv.style.marginTop = '20px';
+  resultDiv.style.padding = '15px';
+  resultDiv.style.border = '1px solid #4a3fbd';
+  resultDiv.style.backgroundColor = '#eef1fc';
 
-  formContainer.appendChild(form);
+  resultDiv.innerHTML = `
+    <h3>Resumo da Anamnese</h3>
+    <p><strong>Nome:</strong> ${dados.nome}</p>
+    <p><strong>Idade:</strong> ${dados.idade} anos</p>
+    <p><strong>Sexo:</strong> ${dados.sexo}</p>
+    <p><strong>Peso:</strong> ${dados.peso} kg</p>
+    <p><strong>Altura:</strong> ${dados.altura} cm</p>
+    <p><strong>IMC:</strong> ${dados.imc}</p>
+    <hr />
+    <p><strong>Condições clínicas prévias:</strong> ${dados.condicoes || 'Nenhuma'}</p>
+    <p><strong>Medicações atuais:</strong> ${dados.medicacoes || 'Nenhuma'}</p>
+    <p><strong>Alergias:</strong> ${dados.alergias || 'Nenhuma'}</p>
+    <hr />
+    <p><strong>Atividades diárias com dificuldade:</strong> ${dados.atividade_diaria || 'Nenhuma'}</p>
+    <p><strong>Escala de dor:</strong> ${dados.escala_dor || 'Não informada'}</p>
+    <p><strong>Nível de estresse:</strong> ${dados.estresse || 'Não informado'}</p>
+    <hr />
+    <p><strong>Observações adicionais:</strong> ${dados.observacoes || 'Nenhuma'}</p>
+  `;
 
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    const valid = validateCOPMForm(form);
-    if (!valid) return;
-    saveCOPMForm(form);
-    alert('Dados salvos com sucesso!');
-  });
-
-  loadCOPMForm();
+  if (!document.getElementById('result')) {
+    formContainer.appendChild(resultDiv);
+  }
 }
+
+// As funções validateForm, saveFormData, loadFormData, createCOPMForm e validações/copm continuam iguais:
 
 function validateForm(fields, form) {
   let valid = true;
@@ -245,6 +254,88 @@ function loadFormData(protocol, fields, form) {
       input.value = data[field.name];
     }
   });
+}
+
+// Funções do COPM (mantém seu código atual)
+
+function createCOPMForm() {
+  formContainer.innerHTML = '';
+
+  const form = document.createElement('form');
+  form.id = 'copm-form';
+
+  modelos.copm.forEach((section, i) => {
+    const sectionDiv = document.createElement('div');
+    sectionDiv.classList.add('copm-section');
+
+    const title = document.createElement('h2');
+    title.textContent = section.category;
+    sectionDiv.appendChild(title);
+
+    const activityLabel = document.createElement('label');
+    activityLabel.htmlFor = `activity_${i}`;
+    activityLabel.textContent = section.questions[0];
+    sectionDiv.appendChild(activityLabel);
+
+    const activityInput = document.createElement('input');
+    activityInput.type = 'text';
+    activityInput.id = `activity_${i}`;
+    activityInput.name = `activity_${i}`;
+    activityInput.required = true;
+    sectionDiv.appendChild(activityInput);
+
+    const perfLabel = document.createElement('label');
+    perfLabel.htmlFor = `performance_${i}`;
+    perfLabel.textContent = section.questions[1];
+    sectionDiv.appendChild(perfLabel);
+
+    const perfInput = document.createElement('input');
+    perfInput.type = 'number';
+    perfInput.id = `performance_${i}`;
+    perfInput.name = `performance_${i}`;
+    perfInput.min = 1;
+    perfInput.max = 10;
+    perfInput.required = true;
+    sectionDiv.appendChild(perfInput);
+
+    const satLabel = document.createElement('label');
+    satLabel.htmlFor = `satisfaction_${i}`;
+    satLabel.textContent = section.questions[2];
+    sectionDiv.appendChild(satLabel);
+
+    const satInput = document.createElement('input');
+    satInput.type = 'number';
+    satInput.id = `satisfaction_${i}`;
+    satInput.name = `satisfaction_${i}`;
+    satInput.min = 1;
+    satInput.max = 10;
+    satInput.required = true;
+    sectionDiv.appendChild(satInput);
+
+    form.appendChild(sectionDiv);
+  });
+
+  const submitBtn = document.createElement('button');
+  submitBtn.type = 'submit';
+  submitBtn.textContent = 'Enviar';
+  form.appendChild(submitBtn);
+
+  const resultDiv = document.createElement('div');
+  resultDiv.id = 'result';
+  resultDiv.style.display = 'none';
+  form.appendChild(resultDiv);
+
+  formContainer.appendChild(form);
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const valid = validateCOPMForm(form);
+    if (!valid) return;
+    saveCOPMForm(form);
+    alert('Dados salvos com sucesso!');
+  });
+
+  loadCOPMForm();
 }
 
 function validateCOPMForm(form) {
@@ -311,11 +402,14 @@ function renderProtocol(protocol) {
   protocolTitle.textContent = {
     denver_ii: 'Denver II',
     checklist_denver: 'Checklist Denver',
-    copm: 'COPM'
+    copm: 'COPM',
+    anamnese_to: 'Anamnese TO'
   }[protocol] || '';
 
   if (protocol === 'copm') {
     createCOPMForm();
+  } else if (protocol === 'anamnese_to') {
+    createStandardForm(modelos.anamnese_to);
   } else {
     createStandardForm(modelos[protocol]);
   }
@@ -325,16 +419,4 @@ sidebarButtons.forEach(button => {
   button.addEventListener('click', () => {
     sidebarButtons.forEach(btn => btn.classList.remove('active'));
     button.classList.add('active');
-    renderProtocol(button.dataset.protocol);
-  });
-});
-
-clearBtn.addEventListener('click', () => {
-  if (confirm('Deseja realmente limpar os dados deste protocolo?')) {
-    localStorage.removeItem(`formData_${currentProtocol}`);
-    renderProtocol(currentProtocol);
-  }
-});
-
-// Inicializa com Denver II
-renderProtocol(currentProtocol);
+    renderProtocol(b

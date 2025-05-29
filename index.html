@@ -1,52 +1,131 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title> TERAPIA OCUPACIONAL </title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Montserrat&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="https://unpkg.com/jspdf-autotable@3.5.3/dist/jspdf.plugin.autotable.js"></script>
-</head>
-<body>
-  <div class="container">
-    <h1>Fichas e protocolos - Terapia Ocupacional</h1>
-    <label for="modelo">Selecione o modelo de ficha:</label>
-    <select id="modelo">
-      <option value="">-- Selecione --</option>
-      <option value="denver_ii">DENVER II - Triagem do Desenvolvimento</option>
-      <option value="checklist_denver">Checklist Denver (Autismo)</option>
-  <option value="denver_ii">Denver II</option>
-  <option value="checklist_denver">Checklist Denver</option>
-  <option value="copm">COPM</option>
-      <option value="sweaa">SWEAA - Avaliação de Deglutição e Alimentação</option>
-      <option value="ebai">EBAI - Escala Brasileira de Alimentação Infantil</option>
-      <option value="bpfas">BPFAS - Escala de Avaliação do Comportamento Alimentar Pediátrico</option>
-      <option value="alberta">Inventário de Comportamentos Adaptativos de Alberta</option>
-      <option value="escala_labirinto">Escala Labirinto de Avaliação do Comportamento Alimentar</option>
-      <option value="seletividade_alimentar">Seletividade Alimentar - Terapia Ocupacional</option>
-      <option value="triagem_ahs">Triagem de Altas Habilidades/Superdotação</option>
-      <option value="chores_t12">CHORES - Tarefas Domésticas (T12)</option>
-      <option value="ahemd_is">AHEMD-IS - Escala Bebê (3-18 meses)</option>
-      <option value="ADD1">ADD1</option>
-      <option value="ADD2">ADD2</option>
-      <option value="ADD3">ADD3</option>
-      <option value="ADD4">ADD4</option>
-      <option value="ADD5">ADD5</option>
-      <option value="ADD6">ADD6</option>
-      <option value="ADD7">ADD7</option>
-      <option value="ADD8">ADD8</option>
-      <option value="ADD9">ADD9</option>
-      <option value="ADD10">ADD10</option>
-      <!-- Adicione outras fichas aqui -->
-    </select>
-    <button id="limpar-btn" style="display:none; margin-top:10px;">Limpar Dados</button>
-    <form id="ficha-form" style="display:none;">
-      <div id="form-content"></div>
-      <button type="submit">Salvar</button>
-    </form>
-  </div>
-  <script src="script.js"></script>
-</body>
-</html>
+const modelos = {
+  denver_ii: [
+    { label: 'Nome da criança', type: 'text', name: 'nome_crianca', required: true },
+    { label: 'Data de nascimento', type: 'date', name: 'data_nascimento', required: true },
+    { label: 'Idade (anos, meses, dias)', type: 'text', name: 'idade', required: true },
+    { label: 'Data do teste', type: 'date', name: 'data_teste', required: true },
+    { label: 'Nome do avaliador', type: 'text', name: 'avaliador', required: true },
+    { label: 'Responsável presente', type: 'text', name: 'responsavel', required: false },
+    { label: 'Olha para o rosto', type: 'select', name: 'olha_rosto', required: true, options: ['Passou', 'Falhou', 'Sem oportunidade', 'Recusou'] },
+    { label: 'Sorri em resposta', type: 'select', name: 'sorri_resposta', required: true, options: ['Passou', 'Falhou', 'Sem oportunidade', 'Recusou'] },
+    { label: 'Observações gerais', type: 'textarea', name: 'observacoes' },
+    { label: 'Interpretação do teste', type: 'select', name: 'interpretacao', required: true, options: ['Normal', 'Questionável', 'Não aplicável'] }
+  ],
+  checklist_denver: [
+    { label: 'Nome da criança', type: 'text', name: 'nome_crianca', required: true },
+    { label: 'Data de nascimento', type: 'date', name: 'data_nascimento', required: true },
+    { label: 'Idade (anos, meses, dias)', type: 'text', name: 'idade', required: true },
+    { label: 'Data do teste', type: 'date', name: 'data_teste', required: true },
+    { label: 'Nome do avaliador', type: 'text', name: 'avaliador', required: true },
+    { label: 'Responsável presente', type: 'text', name: 'responsavel', required: false },
+    { label: 'Olha para o rosto', type: 'select', name: 'olha_rosto', required: true, options: ['Passou', 'Falhou', 'Sem oportunidade', 'Recusou'] },
+    { label: 'Sorri em resposta', type: 'select', name: 'sorri_resposta', required: true, options: ['Passou', 'Falhou', 'Sem oportunidade', 'Recusou'] },
+    { label: 'Observações gerais', type: 'textarea', name: 'observacoes' },
+    { label: 'Interpretação do teste', type: 'select', name: 'interpretacao', required: true, options: ['Normal', 'Questionável', 'Não aplicável'] }
+  ],
+  copm: [
+    {
+      category: "Cuidados Pessoais",
+      questions: [
+        "Escolha uma atividade importante para você relacionada a cuidados pessoais",
+        "Avalie seu desempenho nessa atividade (1 a 10)",
+        "Avalie sua satisfação com seu desempenho nessa atividade (1 a 10)"
+      ]
+    },
+    {
+      category: "Lazer",
+      questions: [
+        "Escolha uma atividade importante para você relacionada a lazer",
+        "Avalie seu desempenho nessa atividade (1 a 10)",
+        "Avalie sua satisfação com seu desempenho nessa atividade (1 a 10)"
+      ]
+    },
+    {
+      category: "Trabalho",
+      questions: [
+        "Escolha uma atividade importante para você relacionada ao trabalho",
+        "Avalie seu desempenho nessa atividade (1 a 10)",
+        "Avalie sua satisfação com seu desempenho nessa atividade (1 a 10)"
+      ]
+    }
+  ]
+};
+
+// Função para criar o formulário COPM dinamicamente e validar
+function createCOPMForm(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) {
+    console.error(`Elemento com id "${containerId}" não encontrado.`);
+    return;
+  }
+
+  container.innerHTML = ''; // limpa container
+
+  const form = document.createElement("form");
+  form.id = "copmForm";
+
+  modelos.copm.forEach((section, i) => {
+    const sectionDiv = document.createElement("div");
+    sectionDiv.style.border = "1px solid #ddd";
+    sectionDiv.style.padding = "10px";
+    sectionDiv.style.marginBottom = "15px";
+
+    const title = document.createElement("h2");
+    title.textContent = section.category;
+    sectionDiv.appendChild(title);
+
+    // Pergunta 1 - texto
+    const q1Label = document.createElement("label");
+    q1Label.setAttribute("for", `activity_${i}`);
+    q1Label.textContent = section.questions[0];
+    sectionDiv.appendChild(q1Label);
+
+    const q1Input = document.createElement("input");
+    q1Input.type = "text";
+    q1Input.id = `activity_${i}`;
+    q1Input.name = `activity_${i}`;
+    q1Input.required = true;
+    sectionDiv.appendChild(q1Input);
+
+    // Pergunta 2 - número
+    const q2Label = document.createElement("label");
+    q2Label.setAttribute("for", `performance_${i}`);
+    q2Label.textContent = section.questions[1];
+    sectionDiv.appendChild(q2Label);
+
+    const q2Input = document.createElement("input");
+    q2Input.type = "number";
+    q2Input.id = `performance_${i}`;
+    q2Input.name = `performance_${i}`;
+    q2Input.min = 1;
+    q2Input.max = 10;
+    q2Input.required = true;
+    sectionDiv.appendChild(q2Input);
+
+    // Pergunta 3 - número
+    const q3Label = document.createElement("label");
+    q3Label.setAttribute("for", `satisfaction_${i}`);
+    q3Label.textContent = section.questions[2];
+    sectionDiv.appendChild(q3Label);
+
+    const q3Input = document.createElement("input");
+    q3Input.type = "number";
+    q3Input.id = `satisfaction_${i}`;
+    q3Input.name = `satisfaction_${i}`;
+    q3Input.min = 1;
+    q3Input.max = 10;
+    q3Input.required = true;
+    sectionDiv.appendChild(q3Input);
+
+    form.appendChild(sectionDiv);
+  });
+
+  const submitBtn = document.createElement("button");
+  submitBtn.type = "submit";
+  submitBtn.textContent = "Enviar";
+  form.appendChild(submitBtn);
+
+  const resultDiv = document.createElement("div");
+  resultDiv.id = "result";
+  resultDiv.style.mar
+

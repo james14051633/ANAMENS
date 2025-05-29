@@ -24,16 +24,18 @@ const modelos = {
     { label: 'Interpretação do teste', type: 'select', name: 'interpretacao', required: true, options: ['Normal', 'Questionável', 'Não aplicável'] }
   ],
    copm: [
-    { label: 'Nome da criança', type: 'text', name: 'nome_crianca', required: true },
-    { label: 'Data de nascimento', type: 'date', name: 'data_nascimento', required: true },
-    { label: 'Idade (anos, meses, dias)', type: 'text', name: 'idade', required: true },
-    { label: 'Data do teste', type: 'date', name: 'data_teste', required: true },
-    { label: 'Nome do avaliador', type: 'text', name: 'avaliador', required: true },
-    { label: 'Responsável presente', type: 'text', name: 'responsavel', required: false },
-    { label: 'Olha para o rosto', type: 'select', name: 'olha_rosto', required: true, options: ['Passou', 'Falhou', 'Sem oportunidade', 'Recusou'] },
-    { label: 'Sorri em resposta', type: 'select', name: 'sorri_resposta', required: true, options: ['Passou', 'Falhou', 'Sem oportunidade', 'Recusou'] },
-    { label: 'Observações gerais', type: 'textarea', name: 'observacoes' },
-    { label: 'Interpretação do teste', type: 'select', name: 'interpretacao', required: true, options: ['Normal', 'Questionável', 'Não aplicável'] }
+     { label: 'Nome do Cliente', type: 'text', name: 'nome_cliente', required: true },
+      { label: 'Data', type: 'date', name: 'data', required: true },
+      { label: 'Idade', type: 'number', name: 'idade', required: true },
+      { label: 'Sexo', type: 'select', name: 'sexo', required: true, options: ['Feminino', 'Masculino', 'Outro'] },
+      { label: 'Ocupação Principal', type: 'text', name: 'ocupacao', required: true },
+      { label: 'Problemas de Desempenho (descreva até 5)', type: 'textarea', name: 'problemas', required: true },
+      { label: 'Importância (0 a 10)', type: 'number', name: 'importancia', required: true, min: 0, max: 10 },
+      { label: 'Desempenho (0 a 10)', type: 'number', name: 'desempenho', required: true, min: 0, max: 10 },
+      { label: 'Satisfação (0 a 10)', type: 'number', name: 'satisfacao', required: true, min: 0, max: 10 },
+      { label: 'Observações', type: 'textarea', name: 'observacoes', required: false }
+    ];
+
   ],
    sweaa: [
     { label: 'Nome da criança', type: 'text', name: 'nome_crianca', required: true },

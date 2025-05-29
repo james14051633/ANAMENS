@@ -16,6 +16,127 @@ const modelos = {
   // ... Adicione todos os outros modelos conforme as respostas anteriores ...
   // Exemplo: copm, sweaa, ebai, bpfas, alberta, escala_labirinto, seletividade_alimentar, triagem_ahs, chores_t12, ahemd_is etc.
 };
+<script>
+    // Perguntas do protocolo (adicione mais conforme necessário)
+    const perguntas = [
+      "Prefere comer sozinho(a):",
+      "Sente-se desconfortável ao comer com outras pessoas:",
+      "Evita certos alimentos por causa da textura:",
+      "Mastiga os alimentos por muito tempo:",
+      "Come sempre no mesmo horário:",
+      "Segue uma ordem específica ao comer:"
+    ];
+
+    // Opções de resposta
+    const opcoes = [
+      { texto: "Nunca", valor: 0 },
+      { texto: "Raramente", valor: 1 },
+      { texto: "Às vezes", valor: 2 },
+      { texto: "Frequentemente", valor: 3 },
+      { texto: "Sempre", valor: 4 }
+    ];
+
+    // Criação dinâmica do formulário
+    function criarFormulario() {
+      const container = document.getElementById('formContainer');
+      const form = document.createElement('form');
+      form.id = "sweaaForm";
+      form.autocomplete = "off";
+
+      // Dados gerais
+      const fieldsetDados = document.createElement('fieldset');
+      const legendDados = document.createElement('legend');
+      legendDados.innerText = "Dados Gerais";
+      fieldsetDados.appendChild(legendDados);
+
+      fieldsetDados.innerHTML += `
+        <label for="codigo">Código do participante:</label>
+        <input type="text" id="codigo" name="codigo" required><br><br>
+        <label for="idade">Idade:</label>
+        <input type="number" id="idade" name="idade" min="1" required><br><br>
+        <label for="sexo">Sexo:</label>
+        <select id="sexo" name="sexo" required>
+          <option value="">Selecione</option>
+          <option value="feminino">Feminino</option>
+          <option value="masculino">Masculino</option>
+          <option value="outro">Outro</option>
+        </select>
+      `;
+      form.appendChild(fieldsetDados);
+
+      // Perguntas
+      const fieldsetPerguntas = document.createElement('fieldset');
+      const legendPerguntas = document.createElement('legend');
+      legendPerguntas.innerText = "Perguntas";
+      fieldsetPerguntas.appendChild(legendPerguntas);
+
+      perguntas.forEach((pergunta, idx) => {
+        const label = document.createElement('label');
+        label.innerText = `${idx + 1}. ${pergunta}`;
+        fieldsetPerguntas.appendChild(label);
+
+        opcoes.forEach(opcao => {
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.name = 'q' + (idx + 1);
+          radio.value = opcao.valor;
+          radio.id = `q${idx + 1}_${opcao.valor}`;
+          radio.onclick = calcularPontuacao;
+
+          const radioLabel = document.createElement('label');
+          radioLabel.style.display = "inline";
+          radioLabel.htmlFor = radio.id;
+          radioLabel.innerText = opcao.texto;
+
+          fieldsetPerguntas.appendChild(radio);
+          fieldsetPerguntas.appendChild(radioLabel);
+        });
+        fieldsetPerguntas.appendChild(document.createElement('br'));
+      });
+
+      form.appendChild(fieldsetPerguntas);
+
+      // Botão de cálculo
+      const btn = document.createElement('button');
+      btn.type = "button";
+      btn.className = "btn";
+      btn.innerText = "Calcular Pontuação";
+      btn.onclick = calcularPontuacao;
+      form.appendChild(btn);
+
+      container.appendChild(form);
+    }
+
+    // Função de cálculo automático
+    function calcularPontuacao() {
+      let total = 0;
+      let respondidas = 0;
+
+      for (let i = 1; i <= perguntas.length; i++) {
+        const radios = document.getElementsByName('q' + i);
+        let marcada = false;
+        for (let j = 0; j < radios.length; j++) {
+          if (radios[j].checked) {
+            total += parseInt(radios[j].value);
+            marcada = true;
+            break;
+          }
+        }
+        if (marcada) respondidas++;
+      }
+
+      if (respondidas < perguntas.length) {
+        document.getElementById('resultadoScore').innerHTML = "<span style='color:red;'>Por favor, responda todas as perguntas.</span>";
+      } else {
+        document.getElementById('resultadoScore').textContent = "Pontuação total: " + total;
+      }
+    }
+
+    // Inicializa o formulário ao carregar a página
+    window.onload = criarFormulario;
+  </script>
+
+
 
 const modeloSelect = document.getElementById('modelo');
 const form = document.getElementById('ficha-form');

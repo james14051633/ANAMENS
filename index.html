@@ -31,4 +31,273 @@
   }
   .sidebar ul {
     list-style: none;
-    padding-l
+    padding-left: 0;
+  }
+  .sidebar li {
+    margin-bottom: 15px;
+  }
+  .sidebar button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 8px 12px;
+    width: 100%;
+    text-align: left;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  .sidebar button.active,
+  .sidebar button:hover {
+    background-color: #362f8a;
+  }
+  .content {
+    flex-grow: 1;
+    padding: 30px;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+  header h1 {
+    margin-top: 0;
+    font-family: 'Montserrat', sans-serif;
+    color: #4a3fbd;
+  }
+  label {
+    display: block;
+    margin-top: 15px;
+    font-weight: 600;
+    color: #333;
+  }
+  input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-family: inherit;
+    resize: vertical;
+  }
+  input.invalid, select.invalid, textarea.invalid {
+    border-color: #e53935;
+    background-color: #ffebee;
+  }
+  button[type="submit"] {
+    margin-top: 25px;
+    background-color: #4a3fbd;
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+  }
+  button[type="submit"]:hover {
+    background-color: #362f8a;
+  }
+  #clear-btn {
+    margin-top: 20px;
+    background-color: #e53935;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 220px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  #clear-btn:hover {
+    background-color: #b71c1c;
+  }
+  #result {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #4a3fbd;
+    background-color: #eef1fc;
+    border-radius: 6px;
+  }
+  .copm-section {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+  }
+  .copm-section h2 {
+    margin-top: 0;
+    color: #4a3fbd;
+  }
+</style>
+</head>
+<body>
+  <div class="app-container">
+    <nav class="sidebar">
+      <h2>Protocolos</h2>
+      <ul>
+        <li><button data-protocol="denver_ii" class="active">Denver II</button></li>
+        <li><button data-protocol="checklist_denver">Checklist Denver</button></li>
+        <li><button data-protocol="copm">COPM</button></li>
+        <li><button data-protocol="anamnese_to">Anamnese TO</button></li>
+      </ul>
+    </nav>
+    <main class="content">
+      <header>
+        <h1 id="protocol-title">Denver II</h1>
+      </header>
+      <section id="form-container">
+        <!-- Formulários serão carregados aqui -->
+      </section>
+      <button id="clear-btn">Limpar Dados</button>
+    </main>
+  </div>
+
+<script>
+const modelos = {
+  denver_ii: [
+    { label: 'Nome da criança', type: 'text', name: 'nome_crianca', required: true },
+    { label: 'Data de nascimento', type: 'date', name: 'data_nascimento', required: true },
+    { label: 'Idade (anos, meses, dias)', type: 'text', name: 'idade', required: true },
+    { label: 'Data do teste', type: 'date', name: 'data_teste', required: true },
+    { label: 'Nome do avaliador', type: 'text', name: 'avaliador', required: true },
+    { label: 'Responsável presente', type: 'text', name: 'responsavel', required: false },
+    { label: 'Olha para o rosto', type: 'select', name: 'olha_rosto', required: true, options: ['Passou', 'Falhou', 'Sem oportunidade', 'Recusou'] },
+    { label: 'Sorri em resposta', type: 'select', name: 'sorri_resposta', required: true, options: ['Passou', 'Falhou', 'Sem oportunidade', 'Recusou'] },
+    { label: 'Observações gerais', type: 'textarea', name: 'observacoes' },
+    { label: 'Interpretação do teste', type: 'select', name: 'interpretacao', required: true, options: ['Normal', 'Questionável', 'Não aplicável'] }
+  ],
+  checklist_denver: [
+    { label: 'Nome da criança', type: 'text', name: 'nome_crianca', required: true },
+    { label: 'Data de nascimento', type: 'date', name: 'data_nascimento', required: true },
+    { label: 'Idade (anos, meses, dias)', type: 'text', name: 'idade', required: true },
+    { label: 'Data do teste', type: 'date', name: 'data_teste', required: true },
+    { label: 'Nome do avaliador', type: 'text', name: 'avaliador', required: true },
+    { label: 'Responsável presente', type: 'text', name: 'responsavel', required: false },
+    { label: 'Olha para o rosto', type: 'select', name: 'olha_rosto', required: true, options: ['Passou', 'Falhou', 'Sem oportunidade', 'Recusou'] },
+    { label: 'Sorri em resposta', type: 'select', name: 'sorri_resposta', required: true, options: ['Passou', 'Falhou', 'Sem oportunidade', 'Recusou'] },
+    { label: 'Observações gerais', type: 'textarea', name: 'observacoes' },
+    { label: 'Interpretação do teste', type: 'select', name: 'interpretacao', required: true, options: ['Normal', 'Questionável', 'Não aplicável'] }
+  ],
+  copm: [
+    {
+      category: "Cuidados Pessoais",
+      questions: [
+        "Escolha uma atividade importante para você relacionada a cuidados pessoais",
+        "Avalie seu desempenho nessa atividade (1 a 10)",
+        "Avalie sua satisfação com seu desempenho nessa atividade (1 a 10)"
+      ]
+    },
+    {
+      category: "Lazer",
+      questions: [
+        "Escolha uma atividade importante para você relacionada a lazer",
+        "Avalie seu desempenho nessa atividade (1 a 10)",
+        "Avalie sua satisfação com seu desempenho nessa atividade (1 a 10)"
+      ]
+    },
+    {
+      category: "Trabalho",
+      questions: [
+        "Escolha uma atividade importante para você relacionada ao trabalho",
+        "Avalie seu desempenho nessa atividade (1 a 10)",
+        "Avalie sua satisfação com seu desempenho nessa atividade (1 a 10)"
+      ]
+    }
+  ],
+  anamnese_to: [
+    { label: 'Nome completo', type: 'text', name: 'nome', required: true },
+    { label: 'Idade (anos)', type: 'number', name: 'idade', min: 0, max: 120, required: true },
+    { label: 'Sexo', type: 'select', name: 'sexo', required: true, options: ['Feminino', 'Masculino', 'Outro'] },
+    { label: 'Peso (kg)', type: 'number', name: 'peso', min: 0, step: 0.1, required: true },
+    { label: 'Altura (cm)', type: 'number', name: 'altura', min: 0, step: 0.1, required: true },
+    { label: 'IMC (calculado)', type: 'text', name: 'imc', readonly: true },
+    { label: 'Condições clínicas prévias', type: 'textarea', name: 'condicoes' },
+    { label: 'Medicações atuais', type: 'textarea', name: 'medicacoes' },
+    { label: 'Alergias', type: 'textarea', name: 'alergias' },
+    { label: 'Atividades diárias com dificuldade', type: 'textarea', name: 'atividade_diaria' },
+    { label: 'Escala de dor (0 a 10)', type: 'number', name: 'escala_dor', min: 0, max: 10 },
+    { label: 'Nível de estresse (0 a 10)', type: 'number', name: 'estresse', min: 0, max: 10 },
+    { label: 'Observações adicionais', type: 'textarea', name: 'observacoes' }
+  ]
+};
+
+const sidebarButtons = document.querySelectorAll('.sidebar button');
+const formContainer = document.getElementById('form-container');
+const protocolTitle = document.getElementById('protocol-title');
+const clearBtn = document.getElementById('clear-btn');
+
+let currentProtocol = 'denver_ii';
+
+function createStandardForm(fields) {
+  formContainer.innerHTML = '';
+  const form = document.createElement('form');
+  form.id = 'standard-form';
+
+  fields.forEach(field => {
+    const label = document.createElement('label');
+    label.htmlFor = field.name;
+    label.textContent = field.label + (field.required ? ' *' : '');
+    form.appendChild(label);
+
+    let input;
+    if (field.type === 'textarea') {
+      input = document.createElement('textarea');
+      input.rows = 4;
+    } else if (field.type === 'select') {
+      input = document.createElement('select');
+      field.options.forEach(opt => {
+        const option = document.createElement('option');
+        option.value = opt;
+        option.textContent = opt;
+        input.appendChild(option);
+      });
+    } else {
+      input = document.createElement('input');
+      input.type = field.type;
+      if (field.min !== undefined) input.min = field.min;
+      if (field.max !== undefined) input.max = field.max;
+      if (field.step !== undefined) input.step = field.step;
+      if (field.readonly) input.readOnly = true;
+    }
+    input.name = field.name;
+    input.id = field.name;
+    if (field.required) input.required = true;
+
+    form.appendChild(input);
+  });
+
+  if (currentProtocol === 'anamnese_to') {
+    const pesoInput = form.querySelector('input[name="peso"]');
+    const alturaInput = form.querySelector('input[name="altura"]');
+    const imcInput = form.querySelector('input[name="imc"]');
+
+    function calculaIMC() {
+      const peso = parseFloat(pesoInput.value);
+      const alturaCm = parseFloat(alturaInput.value);
+      if (peso > 0 && alturaCm > 0) {
+        const alturaM = alturaCm / 100;
+        const imc = peso / (alturaM * alturaM);
+        imcInput.value = imc.toFixed(2);
+      } else {
+        imcInput.value = '';
+      }
+    }
+
+    pesoInput.addEventListener('input', calculaIMC);
+    alturaInput.addEventListener('input', calculaIMC);
+  }
+
+  const submitBtn = document.createElement('button');
+  submitBtn.type = 'submit';
+  submitBtn.textContent = 'Salvar';
+  form.appendChild(submitBtn);
+
+  formContainer.appendChild(form);
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!validateForm(fields, form)) return;
+    saveFormData(currentProtocol, fields, form);

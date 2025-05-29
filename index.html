@@ -4,184 +4,424 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ficha de Anamnese Completa</title>
+  <title>Ficha de Anamnese Completa - Página Única</title>
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Montserrat&display=swap" rel="stylesheet" />
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  <!-- jsPDF -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="https://unpkg.com/jspdf-autotable@3.5.3/dist/jspdf.plugin.autotable.js"></script>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(270deg, #6a11cb, #2575fc, #6a11cb);
+      background-size: 600% 600%;
+      animation: gradientShift 30s ease infinite;
+      color: #333;
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    @keyframes gradientShift {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .container {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      max-width: 800px;
+      width: 100%;
+      padding: 30px;
+      overflow-y: auto;
+      max-height: 90vh;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #4a3fbd;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    h2 {
+      color: #4a3fbd;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      font-family: 'Montserrat', sans-serif;
+      border-bottom: 2px solid #4a3fbd;
+      padding-bottom: 5px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="tel"],
+    input[type="email"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+      resize: vertical;
+    }
+
+    input[type="text"]:focus,
+    input[type="date"]:focus,
+    input[type="tel"]:focus,
+    input[type="email"]:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: #4a3fbd;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    .checkbox-group label {
+      font-weight: normal;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    button {
+      background: #4a3fbd;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 30px;
+      width: 100%;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #362f8a;
+      transform: translateY(-2px);
+    }
+
+    /* Scrollbar para container se necessário */
+    .container::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .container::-webkit-scrollbar-thumb {
+      background-color: rgba(74, 63, 189, 0.5);
+      border-radius: 4px;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+        max-height: 100vh;
+      }
+    }
+  </style>
 </head>
 
 <body>
   <div class="container">
     <h1>Ficha de Anamnese</h1>
-    <div id="progress-bar">
-      <div id="progress"></div>
-    </div>
-
     <form id="anamnese-form">
       <!-- Seção 1 -->
-      <section class="form-section active">
-        <h2>1. Informações Pessoais</h2>
-        <label for="nome">Nome completo:</label>
-        <input type="text" id="nome" name="nome" required />
+      <h2>1. Informações Pessoais</h2>
+      <label for="nome">Nome completo:</label>
+      <input type="text" id="nome" name="nome" required />
 
-        <label for="data-nascimento">Data de nascimento:</label>
-        <input type="date" id="data-nascimento" name="data-nascimento" required />
+      <label for="data-nascimento">Data de nascimento:</label>
+      <input type="date" id="data-nascimento" name="data-nascimento" required />
 
-        <label for="telefone">Telefone:</label>
-        <input type="tel" id="telefone" name="telefone" />
+      <label for="telefone">Telefone:</label>
+      <input type="tel" id="telefone" name="telefone" />
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" />
-      </section>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" />
 
       <!-- Seção 2 -->
-      <section class="form-section">
-        <h2>2. Histórico de Saúde</h2>
-        <label for="doencas">Doenças prévias ou atuais:</label>
-        <textarea id="doencas" name="doencas" rows="3"></textarea>
+      <h2>2. Histórico de Saúde</h2>
+      <label for="doencas">Doenças prévias ou atuais:</label>
+      <textarea id="doencas" name="doencas" rows="3"></textarea>
 
-        <label for="medicacoes">Medicações em uso:</label>
-        <textarea id="medicacoes" name="medicacoes" rows="3"></textarea>
+      <label for="medicacoes">Medicações em uso:</label>
+      <textarea id="medicacoes" name="medicacoes" rows="3"></textarea>
 
-        <label for="alergias">Alergias:</label>
-        <textarea id="alergias" name="alergias" rows="2"></textarea>
-      </section>
+      <label for="alergias">Alergias:</label>
+      <textarea id="alergias" name="alergias" rows="2"></textarea>
 
       <!-- Seção 3 -->
-      <section class="form-section">
-        <h2>3. Avaliação das AVDs e Habilidades</h2>
-        <label>Você apresenta dificuldades nas seguintes atividades? (Marque as que se aplicam)</label>
-        <div class="checkbox-group">
-          <label><input type="checkbox" name="dificuldades" value="Alimentação" /> Alimentação</label>
-          <label><input type="checkbox" name="dificuldades" value="Higiene pessoal" /> Higiene pessoal</label>
-          <label><input type="checkbox" name="dificuldades" value="Vestir-se" /> Vestir-se</label>
-          <label><input type="checkbox" name="dificuldades" value="Mobilidade" /> Mobilidade</label>
-          <label><input type="checkbox" name="dificuldades" value="Comunicação" /> Comunicação</label>
-          <label><input type="checkbox" name="dificuldades" value="Socialização" /> Socialização</label>
-        </div>
+      <h2>3. Avaliação das AVDs e Habilidades</h2>
+      <label>Você apresenta dificuldades nas seguintes atividades? (Marque as que se aplicam)</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="dificuldades" value="Alimentação" /> Alimentação</label>
+        <label><input type="checkbox" name="dificuldades" value="Higiene pessoal" /> Higiene pessoal</label>
+        <label><input type="checkbox" name="dificuldades" value="Vestir-se" /> Vestir-se</label>
+        <label><input type="checkbox" name="dificuldades" value="Mobilidade" /> Mobilidade</label>
+        <label><input type="checkbox" name="dificuldades" value="Comunicação" /> Comunicação</label>
+        <label><input type="checkbox" name="dificuldades" value="Socialização" /> Socialização</label>
+      </div>
 
-        <label for="habilidades-motoras">Habilidades motoras finas e grossas (descreva):</label>
-        <textarea id="habilidades-motoras" name="habilidades-motoras" rows="4"></textarea>
+      <label for="habilidades-motoras">Habilidades motoras finas e grossas (descreva):</label>
+      <textarea id="habilidades-motoras" name="habilidades-motoras" rows="4"></textarea>
 
-        <label for="aspectos-cognitivos">Aspectos cognitivos relevantes:</label>
-        <textarea id="aspectos-cognitivos" name="aspectos-cognitivos" rows="4"></textarea>
-      </section>
+      <label for="aspectos-cognitivos">Aspectos cognitivos relevantes:</label>
+      <textarea id="aspectos-cognitivos" name="aspectos-cognitivos" rows="4"></textarea>
 
       <!-- Seção 4 -->
-      <section class="form-section">
-        <h2>4. Aspectos Psicossociais</h2>
-        <label for="situacao-familiar">Situação familiar:</label>
-        <textarea id="situacao-familiar" name="situacao-familiar" rows="3"></textarea>
+      <h2>4. Aspectos Psicossociais</h2>
+      <label for="situacao-familiar">Situação familiar:</label>
+      <textarea id="situacao-familiar" name="situacao-familiar" rows="3"></textarea>
 
-        <label for="rede-apoio">Rede de apoio (familiares, amigos, profissionais):</label>
-        <textarea id="rede-apoio" name="rede-apoio" rows="3"></textarea>
-      </section>
+      <label for="rede-apoio">Rede de apoio (familiares, amigos, profissionais):</label>
+      <textarea id="rede-apoio" name="rede-apoio" rows="3"></textarea>
 
       <!-- Seção 5 -->
-      <section class="form-section">
-        <h2>5. Avaliação Sensorial</h2>
-        <label for="hiperatividade-sensorial">Hiperatividade sensorial:</label>
-        <select id="hiperatividade-sensorial" name="hiperatividade-sensorial" required>
-          <option value="" disabled selected>Selecione</option>
-          <option value="nenhuma">Nenhuma</option>
-          <option value="leve">Leve</option>
-          <option value="moderada">Moderada</option>
-          <option value="severa">Severa</option>
-        </select>
+      <h2>5. Avaliação Sensorial</h2>
+      <label for="hiperatividade-sensorial">Hiperatividade sensorial:</label>
+      <select id="hiperatividade-sensorial" name="hiperatividade-sensorial" required>
+        <option value="" disabled selected>Selecione</option>
+        <option value="nenhuma">Nenhuma</option>
+        <option value="leve">Leve</option>
+        <option value="moderada">Moderada</option>
+        <option value="severa">Severa</option>
+      </select>
 
-        <label for="hipoatividade-sensorial">Hipoatividade sensorial:</label>
-        <select id="hipoatividade-sensorial" name="hipoatividade-sensorial" required>
-          <option value="" disabled selected>Selecione</option>
-          <option value="nenhuma">Nenhuma</option>
-          <option value="leve">Leve</option>
-          <option value="moderada">Moderada</option>
-          <option value="severa">Severa</option>
-        </select>
+      <label for="hipoatividade-sensorial">Hipoatividade sensorial:</label>
+      <select id="hipoatividade-sensorial" name="hipoatividade-sensorial" required>
+        <option value="" disabled selected>Selecione</option>
+        <option value="nenhuma">Nenhuma</option>
+        <option value="leve">Leve</option>
+        <option value="moderada">Moderada</option>
+        <option value="severa">Severa</option>
+      </select>
 
-        <label for="sensibilidade-tatil">Sensibilidade tátil (descrição):</label>
-        <textarea id="sensibilidade-tatil" name="sensibilidade-tatil" rows="3"></textarea>
-      </section>
+      <label for="sensibilidade-tatil">Sensibilidade tátil (descrição):</label>
+      <textarea id="sensibilidade-tatil" name="sensibilidade-tatil" rows="3"></textarea>
 
       <!-- Seção 6 -->
-      <section class="form-section">
-        <h2>6. Comunicação e Linguagem</h2>
-        <label for="comunicacao-verbal">Comunicação verbal:</label>
-        <select id="comunicacao-verbal" name="comunicacao-verbal" required>
-          <option value="" disabled selected>Selecione</option>
-          <option value="funcional">Funcional</option>
-          <option value="limitada">Limitada</option>
-          <option value="ausente">Ausente</option>
-        </select>
+      <h2>6. Comunicação e Linguagem</h2>
+      <label for="comunicacao-verbal">Comunicação verbal:</label>
+      <select id="comunicacao-verbal" name="comunicacao-verbal" required>
+        <option value="" disabled selected>Selecione</option>
+        <option value="funcional">Funcional</option>
+        <option value="limitada">Limitada</option>
+        <option value="ausente">Ausente</option>
+      </select>
 
-        <label for="uso-tecnologias">Uso de tecnologias assistivas:</label>
-        <textarea id="uso-tecnologias" name="uso-tecnologias" rows="3" placeholder="Ex: tablets, softwares, dispositivos"></textarea>
-      </section>
+      <label for="uso-tecnologias">Uso de tecnologias assistivas:</label>
+      <textarea id="uso-tecnologias" name="uso-tecnologias" rows="3" placeholder="Ex: tablets, softwares, dispositivos"></textarea>
 
       <!-- Seção 7 -->
-      <section class="form-section">
-        <h2>7. Comportamento e Emoções</h2>
-        <label for="comportamento">Comportamento observado:</label>
-        <textarea id="comportamento" name="comportamento" rows="4"></textarea>
+      <h2>7. Comportamento e Emoções</h2>
+      <label for="comportamento">Comportamento observado:</label>
+      <textarea id="comportamento" name="comportamento" rows="4"></textarea>
 
-        <label for="emocao">Expressão emocional:</label>
-        <select id="emocao" name="emocao" required>
-          <option value="" disabled selected>Selecione</option>
-          <option value="estavel">Estável</option>
-          <option value="variavel">Variável</option>
-          <option value="instavel">Instável</option>
-        </select>
-      </section>
+      <label for="emocao">Expressão emocional:</label>
+      <select id="emocao" name="emocao" required>
+        <option value="" disabled selected>Selecione</option>
+        <option value="estavel">Estável</option>
+        <option value="variavel">Variável</option>
+        <option value="instavel">Instável</option>
+      </select>
 
       <!-- Seção 8 -->
-      <section class="form-section">
-        <h2>8. Histórico Familiar</h2>
-        <label for="condicoes-familiares">Condições médicas na família:</label>
-        <textarea id="condicoes-familiares" name="condicoes-familiares" rows="3"></textarea>
+      <h2>8. Histórico Familiar</h2>
+      <label for="condicoes-familiares">Condições médicas na família:</label>
+      <textarea id="condicoes-familiares" name="condicoes-familiares" rows="3"></textarea>
 
-        <label for="apoio-familiar">Rede de apoio familiar:</label>
-        <textarea id="apoio-familiar" name="apoio-familiar" rows="3"></textarea>
-      </section>
+      <label for="apoio-familiar">Rede de apoio familiar:</label>
+      <textarea id="apoio-familiar" name="apoio-familiar" rows="3"></textarea>
 
       <!-- Seção 9 -->
-      <section class="form-section">
-        <h2>9. Protocolos Utilizados</h2>
-        <p>Selecione os protocolos que serão utilizados no atendimento:</p>
-        <div class="checkbox-group">
-          <label><input type="checkbox" name="protocolos" value="Consulta" /> Consulta</label>
-          <label><input type="checkbox" name="protocolos" value="Avaliação do desempenho ocupacional" /> Avaliação do desempenho ocupacional</label>
-          <label><input type="checkbox" name="protocolos" value="Avaliação dos componentes de desempenho ocupacional" /> Avaliação dos componentes de desempenho ocupacional</label>
-          <label><input type="checkbox" name="protocolos" value="Prescrição de recursos de ajuda técnica e adaptação ambiental" /> Prescrição de recursos de ajuda técnica e adaptação ambiental</label>
-          <label><input type="checkbox" name="protocolos" value="Avaliação da acessibilidade/ergonomia" /> Avaliação da acessibilidade/ergonomia</label>
-          <label><input type="checkbox" name="protocolos" value="Reavaliação" /> Reavaliação</label>
-          <label><input type="checkbox" name="protocolos" value="Aplicação de testes" /> Aplicação de testes</label>
-          <label><input type="checkbox" name="protocolos" value="Outras avaliações" /> Outras avaliações</label>
-        </div>
-      </section>
+      <h2>9. Protocolos Utilizados</h2>
+      <p>Selecione os protocolos que serão utilizados no atendimento:</p>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="protocolos" value="Consulta" /> Consulta</label>
+        <label><input type="checkbox" name="protocolos" value="Avaliação do desempenho ocupacional" /> Avaliação do desempenho ocupacional</label>
+        <label><input type="checkbox" name="protocolos" value="Avaliação dos componentes de desempenho ocupacional" /> Avaliação dos componentes de desempenho ocupacional</label>
+        <label><input type="checkbox" name="protocolos" value="Prescrição de recursos de ajuda técnica e adaptação ambiental" /> Prescrição de recursos de ajuda técnica e adaptação ambiental</label>
+        <label><input type="checkbox" name="protocolos" value="Avaliação da acessibilidade/ergonomia" /> Avaliação da acessibilidade/ergonomia</label>
+        <label><input type="checkbox" name="protocolos" value="Reavaliação" /> Reavaliação</label>
+        <label><input type="checkbox" name="protocolos" value="Aplicação de testes" /> Aplicação de testes</label>
+        <label><input type="checkbox" name="protocolos" value="Outras avaliações" /> Outras avaliações</label>
+      </div>
 
       <!-- Seção 10 -->
-      <section class="form-section">
-        <h2>10. Objetivos Terapêuticos</h2>
-        <label for="objetivos">Quais são os principais objetivos do tratamento?</label>
-        <textarea id="objetivos" name="objetivos" rows="4"></textarea>
-      </section>
+      <h2>10. Objetivos Terapêuticos</h2>
+      <label for="objetivos">Quais são os principais objetivos do tratamento?</label>
+      <textarea id="objetivos" name="objetivos" rows="4"></textarea>
 
-      <div class="buttons">
-        <button type="button" id="prev-btn" disabled>Anterior</button>
-        <button type="button" id="next-btn">Próximo</button>
-        <button type="submit" id="submit-btn" style="display:none;">Enviar</button>
-        <button type="button" id="print-btn" style="display:none; background:#5cb85c;">Imprimir PDF</button>
-      </div>
+      <button type="submit" id="submit-btn">Enviar e Gerar PDF</button>
     </form>
   </div>
 
-  <script src="script.js"></script>
+  <!-- jsPDF e plugin -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="https://unpkg.com/jspdf-autotable@3.5.3/dist/jspdf.plugin.autotable.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('anamnese-form');
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        // Validação simples dos campos obrigatórios
+        const camposObrigatorios = ['nome', 'data-nascimento', 'hiperatividade-sensorial', 'hipoatividade-sensorial', 'comunicacao-verbal', 'emocao'];
+        for (const id of camposObrigatorios) {
+          const campo = document.getElementById(id);
+          if (!campo.value) {
+            alert(`Por favor, preencha o campo obrigatório: ${campo.previousElementSibling.innerText}`);
+            campo.focus();
+            return;
+          }
+        }
+
+        gerarPDF();
+      });
+
+      function gerarPDF() {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF();
+
+        pdf.setFontSize(18);
+        pdf.setTextColor(74, 63, 189);
+        pdf.text('Ficha de Anamnese', 10, 20);
+
+        let y = 30;
+
+        // Função para adicionar seção no PDF
+        function adicionarSecao(titulo, campos) {
+          pdf.setFontSize(14);
+          pdf.setTextColor(74, 63, 189);
+          pdf.text(titulo, 10, y);
+          y += 8;
+
+          const data = [];
+
+          campos.forEach(({ label, value }) => {
+            data.push([label, value || 'Não preenchido']);
+          });
+
+          pdf.autoTable({
+            head: [['Campo', 'Valor']],
+            body: data,
+            startY: y,
+            theme: 'striped',
+            styles: { overflow: 'linebreak', columnWidth: 'auto' },
+            columnStyles: { 0: { columnWidth: 50 }, 1: { columnWidth: 140 } }
+          });
+
+          y = pdf.autoTable.previous.finalY + 10;
+        }
+
+        // Coletar dados de cada seção
+
+        // 1. Informações Pessoais
+        adicionarSecao('1. Informações Pessoais', [
+          { label: 'Nome completo', value: document.getElementById('nome').value },
+          { label: 'Data de nascimento', value: document.getElementById('data-nascimento').value },
+          { label: 'Telefone', value: document.getElementById('telefone').value },
+          { label: 'Email', value: document.getElementById('email').value }
+        ]);
+
+        // 2. Histórico de Saúde
+        adicionarSecao('2. Histórico de Saúde', [
+          { label: 'Doenças prévias ou atuais', value: document.getElementById('doencas').value },
+          { label: 'Medicações em uso', value: document.getElementById('medicacoes').value },
+          { label: 'Alergias', value: document.getElementById('alergias').value }
+        ]);
+
+        // 3. Avaliação das AVDs e Habilidades
+        const dificuldades = Array.from(document.querySelectorAll('input[name="dificuldades"]:checked')).map(cb => cb.value).join(', ') || 'Nenhuma';
+        adicionarSecao('3. Avaliação das AVDs e Habilidades', [
+          { label: 'Dificuldades nas atividades', value: dificuldades },
+          { label: 'Habilidades motoras finas e grossas', value: document.getElementById('habilidades-motoras').value },
+          { label: 'Aspectos cognitivos relevantes', value: document.getElementById('aspectos-cognitivos').value }
+        ]);
+
+        // 4. Aspectos Psicossociais
+        adicionarSecao('4. Aspectos Psicossociais', [
+          { label: 'Situação familiar', value: document.getElementById('situacao-familiar').value },
+          { label: 'Rede de apoio', value: document.getElementById('rede-apoio').value }
+        ]);
+
+        // 5. Avaliação Sensorial
+        adicionarSecao('5. Avaliação Sensorial', [
+          { label: 'Hiperatividade sensorial', value: document.getElementById('hiperatividade-sensorial').value },
+          { label: 'Hipoatividade sensorial', value: document.getElementById('hipoatividade-sensorial').value },
+          { label: 'Sensibilidade tátil', value: document.getElementById('sensibilidade-tatil').value }
+        ]);
+
+        // 6. Comunicação e Linguagem
+        adicionarSecao('6. Comunicação e Linguagem', [
+          { label: 'Comunicação verbal', value: document.getElementById('comunicacao-verbal').value },
+          { label: 'Uso de tecnologias assistivas', value: document.getElementById('uso-tecnologias').value }
+        ]);
+
+        // 7. Comportamento e Emoções
+        adicionarSecao('7. Comportamento e Emoções', [
+          { label: 'Comportamento observado', value: document.getElementById('comportamento').value },
+          { label: 'Expressão emocional', value: document.getElementById('emocao').value }
+        ]);
+
+        // 8. Histórico Familiar
+        adicionarSecao('8. Histórico Familiar', [
+          { label: 'Condições médicas na família', value: document.getElementById('condicoes-familiares').value },
+          { label: 'Rede de apoio familiar', value: document.getElementById('apoio-familiar').value }
+        ]);
+
+        // 9. Protocolos Utilizados
+        const protocolosSelecionados = Array.from(document.querySelectorAll('input[name="protocolos"]:checked')).map(cb => cb.value).join(', ') || 'Nenhum protocolo selecionado';
+        adicionarSecao('9. Protocolos Utilizados', [
+          { label: 'Protocolos selecionados', value: protocolosSelecionados }
+        ]);
+
+        // 10. Objetivos Terapêuticos
+        adicionarSecao('10. Objetivos Terapêuticos', [
+          { label: 'Objetivos do tratamento', value: document.getElementById('objetivos').value }
+        ]);
+
+        // Salvar PDF com nome personalizado
+        const nomePaciente = document.getElementById('nome').value.trim().replace(/\s+/g, '_') || 'Paciente';
+        pdf.save(`Ficha_${nomePaciente}.pdf`);
+
+        alert('Ficha salva na pasta Downloads do seu dispositivo.');
+      }
+    });
+  </script>
 </body>
 
 </html>

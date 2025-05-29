@@ -23,6 +23,42 @@ const modelos = {
     { label: 'Observações gerais', type: 'textarea', name: 'observacoes' },
     { label: 'Interpretação do teste', type: 'select', name: 'interpretacao', required: true, options: ['Normal', 'Questionável', 'Não aplicável'] }
   ],
+   copm: [
+    { label: 'Nome da criança', type: 'text', name: 'nome_crianca', required: true },
+    { label: 'Data de nascimento', type: 'date', name: 'data_nascimento', required: true },
+    { label: 'Idade (anos, meses, dias)', type: 'text', name: 'idade', required: true },
+    { label: 'Data do teste', type: 'date', name: 'data_teste', required: true },
+    { label: 'Nome do avaliador', type: 'text', name: 'avaliador', required: true },
+    { label: 'Responsável presente', type: 'text', name: 'responsavel', required: false },
+    { label: 'Olha para o rosto', type: 'select', name: 'olha_rosto', required: true, options: ['Passou', 'Falhou', 'Sem oportunidade', 'Recusou'] },
+    { label: 'Sorri em resposta', type: 'select', name: 'sorri_resposta', required: true, options: ['Passou', 'Falhou', 'Sem oportunidade', 'Recusou'] },
+    { label: 'Observações gerais', type: 'textarea', name: 'observacoes' },
+    { label: 'Interpretação do teste', type: 'select', name: 'interpretacao', required: true, options: ['Normal', 'Questionável', 'Não aplicável'] }
+  ],
+   sweaa: [
+    { label: 'Nome da criança', type: 'text', name: 'nome_crianca', required: true },
+    { label: 'Data de nascimento', type: 'date', name: 'data_nascimento', required: true },
+    { label: 'Idade (anos, meses, dias)', type: 'text', name: 'idade', required: true },
+    { label: 'Data do teste', type: 'date', name: 'data_teste', required: true },
+    { label: 'Nome do avaliador', type: 'text', name: 'avaliador', required: true },
+    { label: 'Responsável presente', type: 'text', name: 'responsavel', required: false },
+    { label: 'Olha para o rosto', type: 'select', name: 'olha_rosto', required: true, options: ['Passou', 'Falhou', 'Sem oportunidade', 'Recusou'] },
+    { label: 'Sorri em resposta', type: 'select', name: 'sorri_resposta', required: true, options: ['Passou', 'Falhou', 'Sem oportunidade', 'Recusou'] },
+    { label: 'Observações gerais', type: 'textarea', name: 'observacoes' },
+    { label: 'Interpretação do teste', type: 'select', name: 'interpretacao', required: true, options: ['Normal', 'Questionável', 'Não aplicável'] }
+  ],
+  ebai: [
+    { label: 'Nome da criança', type: 'text', name: 'nome_crianca', required: true },
+    { label: 'Data de nascimento', type: 'date', name: 'data_nascimento', required: true },
+    { label: 'Idade (anos, meses, dias)', type: 'text', name: 'idade', required: true },
+    { label: 'Data do teste', type: 'date', name: 'data_teste', required: true },
+    { label: 'Nome do avaliador', type: 'text', name: 'avaliador', required: true },
+    { label: 'Responsável presente', type: 'text', name: 'responsavel', required: false },
+    { label: 'Olha para o rosto', type: 'select', name: 'olha_rosto', required: true, options: ['Passou', 'Falhou', 'Sem oportunidade', 'Recusou'] },
+    { label: 'Sorri em resposta', type: 'select', name: 'sorri_resposta', required: true, options: ['Passou', 'Falhou', 'Sem oportunidade', 'Recusou'] },
+    { label: 'Observações gerais', type: 'textarea', name: 'observacoes' },
+    { label: 'Interpretação do teste', type: 'select', name: 'interpretacao', required: true, options: ['Normal', 'Questionável', 'Não aplicável'] }
+  ],
   // Adicione os outros modelos seguindo o mesmo padrão...
 };
 

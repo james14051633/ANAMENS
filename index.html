@@ -301,3 +301,132 @@ function createStandardForm(fields) {
     e.preventDefault();
     if (!validateForm(fields, form)) return;
     saveFormData(currentProtocol, fields, form);
+
+    if (currentProtocol === 'anamnese_to') {
+      mostrarResumoAnamnese(form);
+    } else {
+      alert('Dados salvos com sucesso!');
+    }
+  });
+
+  loadFormData(currentProtocol, fields, form);
+
+  if (currentProtocol === 'anamnese_to') {
+    mostrarResumoAnamnese(form);
+  }
+}
+
+function mostrarResumoAnamnese(form) {
+  const dados = {};
+  modelos.anamnese_to.forEach(field => {
+    const input = form[field.name];
+    dados[field.name] = input ? input.value : '';
+  });
+
+  let resultDiv = document.getElementById('result');
+  if (!resultDiv) {
+    resultDiv = document.createElement('div');
+    resultDiv.id = 'result';
+    resultDiv.style.marginTop = '20px';
+    resultDiv.style.padding = '15px';
+    resultDiv.style.border = '1px solid #4a3fbd';
+    resultDiv.style.backgroundColor = '#eef1fc';
+    formContainer.appendChild(resultDiv);
+  }
+
+  resultDiv.innerHTML = `
+    <h3>Resumo da Anamnese</h3>
+    <p><strong>Nome:</strong> ${dados.nome}</p>
+    <p><strong>Idade:</strong> ${dados.idade} anos</p>
+    <p><strong>Sexo:</strong> ${dados.sexo}</p>
+    <p><strong>Peso:</strong> ${dados.peso} kg</p>
+    <p><strong>Altura:</strong> ${dados.altura} cm</p>
+    <p><strong>IMC:</strong> ${dados.imc}</p>
+    <hr />
+    <p><strong>Condições clínicas prévias:</strong> ${dados.condicoes || 'Nenhuma'}</p>
+    <p><strong>Medicações atuais:</strong> ${dados.medicacoes || 'Nenhuma'}</p>
+    <p><strong>Alergias:</strong> ${dados.alergias || 'Nenhuma'}</p>
+    <hr />
+    <p><strong>Atividades diárias com dificuldade:</strong> ${dados.atividade_diaria || 'Nenhuma'}</p>
+    <p><strong>Escala de dor:</strong> ${dados.escala_dor || 'Não informada'}</p>
+    <p><strong>Nível de estresse:</strong> ${dados.estresse || 'Não informado'}</p>
+    <hr />
+    <p><strong>Observações adicionais:</strong> ${dados.observacoes || 'Nenhuma'}</p>
+  `;
+}
+
+function validateForm(fields, form) {
+  let valid = true;
+  let messages = [];
+  fields.forEach(field => {
+    const input = form[field.name];
+    if (!input) return;
+    if (field.required && !input.value.trim()) {
+      valid = false;
+      input.classList.add('invalid');
+      messages.push(`O campo "${field.label}" é obrigatório.`);
+    } else {
+      input.classList.remove('invalid');
+    }
+    if (field.type === 'number' && input.value) {
+      const val = Number(input.value);
+      if (field.min !== undefined && val < field.min) {
+        valid = false;
+        input.classList.add('invalid');
+        messages.push(`O campo "${field.label}" deve ser maior ou igual a ${field.min}.`);
+      }
+      if (field.max !== undefined && val > field.max) {
+        valid = false;
+        input.classList.add('invalid');
+        messages.push(`O campo "${field.label}" deve ser menor ou igual a ${field.max}.`);
+      }
+    }
+  });
+  if (!valid) alert(messages.join('\n'));
+  return valid;
+}
+
+function saveFormData(protocol, fields, form) {
+  const data = {};
+  fields.forEach(field => {
+    const input = form[field.name];
+    if (input) data[field.name] = input.value;
+  });
+  localStorage.setItem(`formData_${protocol}`, JSON.stringify(data));
+}
+
+function loadFormData(protocol, fields, form) {
+  const dataRaw = localStorage.getItem(`formData_${protocol}`);
+  if (!dataRaw) return;
+  const data = JSON.parse(dataRaw);
+  fields.forEach(field => {
+    const input = form[field.name];
+    if (input && data[field.name]) {
+      input.value = data[field.name];
+    }
+  });
+}
+
+function createCOPMForm() {
+  formContainer.innerHTML = '';
+
+  const form = document.createElement('form');
+  form.id = 'copm-form';
+
+  modelos.copm.forEach((section, i) => {
+    const sectionDiv = document.createElement('div');
+    sectionDiv.classList.add('copm-section');
+
+    const title = document.createElement('h2');
+    title.textContent = section.category;
+    sectionDiv.appendChild(title);
+
+    const activityLabel = document.createElement('label');
+    activityLabel.htmlFor = `activity_${i}`;
+    activityLabel.textContent = section.questions[0];
+    sectionDiv.appendChild(activityLabel);
+
+    const activityInput = document.createElement('input');
+    activityInput.type = 'text';
+    activityInput.id = `activity_${i}`;
+    activityInput.name

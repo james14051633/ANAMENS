@@ -1,152 +1,53 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('anamnese-form');
-    const sections = document.querySelectorAll('.form-section');
-    const nextBtn = document.getElementById('next-btn');
-    const prevBtn = document.getElementById('prev-btn');
-    const submitBtn = document.getElementById('submit-btn');
-    const printBtn = document.getElementById('print-btn');
-    const progress = document.getElementById('progress');
+  const form = document.getElementById('anamnese-form');
+  const submitBtn = document.getElementById('submit-btn');
+  const printBtn = document.getElementById('print-btn');
 
-    let currentSection = 0;
+  // Função para gerar e salvar o PDF com nome personalizado
+  function gerarSalvarPDF() {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
 
-    function updateForm() {
-        sections.forEach((section, index) => {
-            section.classList.toggle('active', index === currentSection);
-        });
+    let nomePaciente = document.getElementById('nome').value.trim();
+    if (!nomePaciente) nomePaciente = 'Paciente';
+    const nomeArquivo = 'Ficha_' + nomePaciente.replace(/\s+/g, '_') + '.pdf';
 
-        prevBtn.disabled = currentSection === 0;
-        prevBtn.style.display = currentSection === 0 ? 'none' : 'inline-block';
-        nextBtn.style.display = currentSection === sections.length - 1 ? 'none' : 'inline-block';
-        submitBtn.style.display = currentSection === sections.length - 1 ? 'inline-block' : 'none';
-        printBtn.style.display = 'none';
+    pdf.setFontSize(18);
+    pdf.setTextColor(74, 63, 189);
+    pdf.text('Ficha de Anamnese', 10, 20);
 
-        const progressPercent = (currentSection / (sections.length - 1)) * 100;
-        progress.style.width = progressPercent + '%';
+    pdf.setFontSize(12);
+    pdf.setTextColor(0, 0, 0);
+    pdf.text(`Nome: ${document.getElementById('nome').value}`, 10, 40);
+    pdf.text(`Data de nascimento: ${document.getElementById('data-nascimento').value}`, 10, 50);
+    pdf.text(`Telefone: ${document.getElementById('telefone').value}`, 10, 60);
+    pdf.text(`Email: ${document.getElementById('email').value}`, 10, 70);
+
+    pdf.save(nomeArquivo);
+
+    alert(`Arquivo salvo na pasta Downloads do seu dispositivo com o nome: ${nomeArquivo}.\n\nPara localizar, abra a pasta Downloads no seu computador ou celular.`);
+  }
+
+  // Evento submit do formulário
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    if (!document.getElementById('nome').value.trim()) {
+      alert('Por favor, preencha o nome do paciente.');
+      return;
     }
 
-    function checkFormValidity() {
-        let isValid = true;
-        const currentSectionFields = sections[currentSection].querySelectorAll('input[required], textarea[required], select[required]');
+    alert('Ficha enviada com sucesso!');
 
-        currentSectionFields.forEach(field => {
-            if (!field.value) {
-                isValid = false;
-                field.classList.add('invalid');
-            } else {
-                field.classList.remove('invalid');
-            }
-        });
+    submitBtn.style.display = 'none';
+    printBtn.style.display = 'inline-block';
+  });
 
-        return isValid;
-    }
+  // Evento do botão imprimir para gerar e salvar PDF
+  printBtn.addEventListener('click', () => {
+    gerarSalvarPDF();
+  });
 
-    nextBtn.addEventListener('click', () => {
-        if (!checkFormValidity()) {
-            alert('Por favor, preencha todos os campos obrigatórios desta seção.');
-            return;
-        }
-
-        currentSection++;
-        updateForm();
-
-        if (currentSection === sections.length - 1) {
-            submitBtn.style.display = 'inline-block';
-            nextBtn.style.display = 'none';
-        }
-    });
-
-    prevBtn.addEventListener('click', () => {
-        currentSection--;
-        updateForm();
-
-        submitBtn.style.display = 'none';
-        nextBtn.style.display = 'inline-block';
-    });
-
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        if (!checkFormValidity()) {
-            alert('Por favor, preencha todos os campos obrigatórios.');
-            return;
-        }
-
-        alert('Ficha enviada com sucesso!');
-        submitBtn.style.display = 'none';
-        printBtn.style.display = 'inline-block';
-    });
-
-    printBtn.addEventListener('click', () => {
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF();
-
-        pdf.setFontSize(18);
-        pdf.setTextColor(74, 63, 189);
-        pdf.text('Ficha de Anamnese', 10, 20);
-
-        let y = 30;
-
-        sections.forEach(section => {
-            const title = section.querySelector('h2').innerText;
-            pdf.setFontSize(14);
-            pdf.setTextColor(74, 63, 189);
-            pdf.text(title, 10, y);
-            y += 8;
-
-            const inputs = section.querySelectorAll('input, textarea, select');
-            let data = [];
-            inputs.forEach(input => {
-                let label = '';
-                if (input.previousElementSibling && input.previousElementSibling.tagName === 'LABEL') {
-                    label = input.previousElementSibling.innerText.replace(':', '');
-                }
-                let value = '';
-
-                if (input.type === 'checkbox') {
-                    if (input.checked) {
-                        value = input.value;
-                    } else {
-                        return; // Ignora checkbox não marcado
-                    }
-                } else {
-                    value = input.value || 'Não preenchido';
-                }
-
-                data.push([label, value]);
-            });
-
-            // Para a seção de protocolos, juntar os selecionados
-            if (section.querySelector('h2').innerText === '9. Protocolos Utilizados') {
-                const protocolosSelecionados = [];
-                const protocolosCheckboxes = section.querySelectorAll('input[name="protocolos"]:checked');
-                protocolosCheckboxes.forEach(cb => protocolosSelecionados.push(cb.value));
-                const protocolosTexto = protocolosSelecionados.length > 0 ? protocolosSelecionados.join(', ') : 'Nenhum protocolo selecionado';
-                data.push(['Protocolos Selecionados', protocolosTexto]);
-            }
-
-            pdf.autoTable({
-                head: [['Campo', 'Valor']],
-                body: data,
-                startY: y,
-                theme: 'striped',
-                styles: {
-                    overflow: 'linebreak',
-                    columnWidth: 'auto'
-                },
-                columnStyles: {
-                    0: {
-                        columnWidth: 50
-                    },
-                    1: {
-                        columnWidth: 140
-                    }
-                }
-            });
-
-            y = pdf.autoTable.previous.finalY + 10;
-        });
-
-        pdf.save('ficha-anamnese.pdf');
-    });
-
-    updateForm();
+  // Inicialização: esconde botão imprimir
+  printBtn.style.display = 'none';
 });

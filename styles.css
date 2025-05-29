@@ -36,6 +36,7 @@ label {
 select,
 input[type="text"],
 input[type="date"],
+input[type="number"],
 textarea {
   width: 100%;
   padding: 12px;
@@ -65,4 +66,16 @@ button {
 }
 button:hover {
   background-color: #362f8a;
+}
+/* Resultados COPM */
+#result {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+  display: none;
+}
+/* Espaçamento entre grupos COPM */
+#form-content > div {
+  margin-bottom: 15px;
 }

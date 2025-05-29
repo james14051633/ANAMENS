@@ -1,73 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('anamnese-form');
-  const sections = document.querySelectorAll('.form-section');
-  const nextBtn = document.getElementById('next-btn');
-  const prevBtn = document.getElementById('prev-btn');
-  const submitBtn = document.getElementById('submit-btn');
-  const printBtn = document.getElementById('print-btn');
-  const progress = document.getElementById('progress');
-
-  let currentSection = 0;
-
-  function updateForm() {
-    sections.forEach((section, index) => {
-      section.classList.toggle('active', index === currentSection);
-    });
-
-    prevBtn.disabled = currentSection === 0;
-    prevBtn.style.display = currentSection === 0 ? 'none' : 'inline-block';
-    nextBtn.style.display = currentSection === sections.length - 1 ? 'none' : 'inline-block';
-    submitBtn.style.display = currentSection === sections.length - 1 ? 'inline-block' : 'none';
-    printBtn.style.display = 'none';
-
-    const progressPercent = (currentSection / (sections.length - 1)) * 100;
-    progress.style.width = progressPercent + '%';
-  }
-
-  function checkFormValidity() {
-    let isValid = true;
-    const currentSectionFields = sections[currentSection].querySelectorAll('input[required], textarea[required], select[required]');
-
-    currentSectionFields.forEach(field => {
-      if (!field.value) {
-        isValid = false;
-        field.classList.add('invalid');
-      } else {
-        field.classList.remove('invalid');
-      }
-    });
-
-    return isValid;
-  }
-
-  nextBtn.addEventListener('click', () => {
-    if (!checkFormValidity()) {
-      alert('Por favor, preencha todos os campos obrigatórios desta seção.');
-      return;
-    }
-
-    currentSection++;
-    updateForm();
-  });
-
-  prevBtn.addEventListener('click', () => {
-    currentSection--;
-    updateForm();
-  });
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    if (!checkFormValidity()) {
-      alert('Por favor, preencha todos os campos obrigatórios.');
-      return;
+
+    // Validação simples dos campos obrigatórios
+    const camposObrigatorios = ['nome', 'data-nascimento', 'hiperatividade-sensorial', 'hipoatividade-sensorial', 'comunicacao-verbal', 'emocao'];
+    for (const id of camposObrigatorios) {
+      const campo = document.getElementById(id);
+      if (!campo.value) {
+        alert(`Por favor, preencha o campo obrigatório: ${campo.previousElementSibling.innerText}`);
+        campo.focus();
+        return;
+      }
     }
 
-    alert('Ficha enviada com sucesso!');
-    submitBtn.style.display = 'none';
-    printBtn.style.display = 'inline-block';
+    gerarPDF();
   });
 
-  printBtn.addEventListener('click', () => {
+  function gerarPDF() {
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF();
 
@@ -77,66 +28,88 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let y = 30;
 
-    sections.forEach(section => {
-      const title = section.querySelector('h2').innerText;
+    function adicionarSecao(titulo, campos) {
       pdf.setFontSize(14);
       pdf.setTextColor(74, 63, 189);
-      pdf.text(title, 10, y);
+      pdf.text(titulo, 10, y);
       y += 8;
 
-      const inputs = section.querySelectorAll('input, textarea, select');
-      let data = [];
-      inputs.forEach(input => {
-        let label = '';
-        if (input.previousElementSibling && input.previousElementSibling.tagName === 'LABEL') {
-          label = input.previousElementSibling.innerText.replace(':', '');
-        }
-        let value = '';
+      const data = [];
 
-        if (input.type === 'checkbox') {
-          if (input.checked) {
-            value = input.value;
-          } else {
-            return; // Ignora checkbox não marcado
-          }
-        } else {
-          value = input.value || 'Não preenchido';
-        }
-
-        data.push([label, value]);
+      campos.forEach(({ label, value }) => {
+        data.push([label, value || 'Não preenchido']);
       });
-
-      // Para a seção de protocolos, juntar os selecionados
-      if (section.querySelector('h2').innerText === '9. Protocolos Utilizados') {
-        const protocolosSelecionados = [];
-        const protocolosCheckboxes = section.querySelectorAll('input[name="protocolos"]:checked');
-        protocolosCheckboxes.forEach(cb => protocolosSelecionados.push(cb.value));
-        const protocolosTexto = protocolosSelecionados.length > 0 ? protocolosSelecionados.join(', ') : 'Nenhum protocolo selecionado';
-        data.push(['Protocolos Selecionados', protocolosTexto]);
-      }
 
       pdf.autoTable({
         head: [['Campo', 'Valor']],
         body: data,
         startY: y,
         theme: 'striped',
-        styles: {
-          overflow: 'linebreak',
-          columnWidth: 'auto'
-        },
-        columnStyles: {
-          0: { columnWidth: 50 },
-          1: { columnWidth: 140 }
-        }
+        styles: { overflow: 'linebreak', columnWidth: 'auto' },
+        columnStyles: { 0: { columnWidth: 50 }, 1: { columnWidth: 140 } }
       });
 
       y = pdf.autoTable.previous.finalY + 10;
-    });
+    }
 
-    // Nome do arquivo personalizado com nome do paciente
+    adicionarSecao('1. Informações Pessoais', [
+      { label: 'Nome completo', value: document.getElementById('nome').value },
+      { label: 'Data de nascimento', value: document.getElementById('data-nascimento').value },
+      { label: 'Telefone', value: document.getElementById('telefone').value },
+      { label: 'Email', value: document.getElementById('email').value }
+    ]);
+
+    adicionarSecao('2. Histórico de Saúde', [
+      { label: 'Doenças prévias ou atuais', value: document.getElementById('doencas').value },
+      { label: 'Medicações em uso', value: document.getElementById('medicacoes').value },
+      { label: 'Alergias', value: document.getElementById('alergias').value }
+    ]);
+
+    const dificuldades = Array.from(document.querySelectorAll('input[name="dificuldades"]:checked')).map(cb => cb.value).join(', ') || 'Nenhuma';
+    adicionarSecao('3. Avaliação das AVDs e Habilidades', [
+      { label: 'Dificuldades nas atividades', value: dificuldades },
+      { label: 'Habilidades motoras finas e grossas', value: document.getElementById('habilidades-motoras').value },
+      { label: 'Aspectos cognitivos relevantes', value: document.getElementById('aspectos-cognitivos').value }
+    ]);
+
+    adicionarSecao('4. Aspectos Psicossociais', [
+      { label: 'Situação familiar', value: document.getElementById('situacao-familiar').value },
+      { label: 'Rede de apoio', value: document.getElementById('rede-apoio').value }
+    ]);
+
+    adicionarSecao('5. Avaliação Sensorial', [
+      { label: 'Hiperatividade sensorial', value: document.getElementById('hiperatividade-sensorial').value },
+      { label: 'Hipoatividade sensorial', value: document.getElementById('hipoatividade-sensorial').value },
+      { label: 'Sensibilidade tátil', value: document.getElementById('sensibilidade-tatil').value }
+    ]);
+
+    adicionarSecao('6. Comunicação e Linguagem', [
+      { label: 'Comunicação verbal', value: document.getElementById('comunicacao-verbal').value },
+      { label: 'Uso de tecnologias assistivas', value: document.getElementById('uso-tecnologias').value }
+    ]);
+
+    adicionarSecao('7. Comportamento e Emoções', [
+      { label: 'Comportamento observado', value: document.getElementById('comportamento').value },
+      { label: 'Expressão emocional', value: document.getElementById('emocao').value }
+    ]);
+
+    adicionarSecao('8. Histórico Familiar', [
+      { label: 'Condições médicas na família', value: document.getElementById('condicoes-familiares').value },
+      { label: 'Rede de apoio familiar', value: document.getElementById('apoio-familiar').value }
+    ]);
+
+    const protocolosSelecionados = Array.from(document.querySelectorAll('input[name="protocolos"]:checked')).map(cb => cb.value).join(', ') || 'Nenhum protocolo selecionado';
+    adicionarSecao('9. Protocolos Utilizados', [
+      { label: 'Protocolos selecionados', value: protocolosSelecionados }
+    ]);
+
+    adicionarSecao('10. Objetivos Terapêuticos', [
+      { label: 'Objetivos do tratamento', value: document.getElementById('objetivos').value }
+    ]);
+
     const nomePaciente = document.getElementById('nome').value.trim().replace(/\s+/g, '_') || 'Paciente';
     pdf.save(`Ficha_${nomePaciente}.pdf`);
-  });
 
-  updateForm();
+    alert('Ficha salva na pasta Downloads do seu dispositivo.');
+  }
 });

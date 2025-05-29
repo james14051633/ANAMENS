@@ -1,4 +1,3 @@
-// Corrija os modelos conforme abaixo
 const modelos = {
   denver_ii: [
     { label: 'Nome da criança', type: 'text', name: 'nome_crianca', required: true },
@@ -26,32 +25,33 @@ const modelos = {
   ],
   copm: [
     {
-    category: "Cuidados Pessoais",
-    questions: [
-      "Escolha uma atividade importante para você relacionada a cuidados pessoais",
-      "Avalie seu desempenho nessa atividade (1 a 10)",
-      "Avalie sua satisfação com seu desempenho nessa atividade (1 a 10)"
-    ]
-  },
-  {
-    category: "Lazer",
-    questions: [
-      "Escolha uma atividade importante para você relacionada a lazer",
-      "Avalie seu desempenho nessa atividade (1 a 10)",
-      "Avalie sua satisfação com seu desempenho nessa atividade (1 a 10)"
-    ]
-  },
-  {
-    category: "Trabalho",
-    questions: [
-      "Escolha uma atividade importante para você relacionada ao trabalho",
-      "Avalie seu desempenho nessa atividade (1 a 10)",
-      "Avalie sua satisfação com seu desempenho nessa atividade (1 a 10)"
-    ]
-  }
-];
+      category: "Cuidados Pessoais",
+      questions: [
+        "Escolha uma atividade importante para você relacionada a cuidados pessoais",
+        "Avalie seu desempenho nessa atividade (1 a 10)",
+        "Avalie sua satisfação com seu desempenho nessa atividade (1 a 10)"
+      ]
+    },
+    {
+      category: "Lazer",
+      questions: [
+        "Escolha uma atividade importante para você relacionada a lazer",
+        "Avalie seu desempenho nessa atividade (1 a 10)",
+        "Avalie sua satisfação com seu desempenho nessa atividade (1 a 10)"
+      ]
+    },
+    {
+      category: "Trabalho",
+      questions: [
+        "Escolha uma atividade importante para você relacionada ao trabalho",
+        "Avalie seu desempenho nessa atividade (1 a 10)",
+        "Avalie sua satisfação com seu desempenho nessa atividade (1 a 10)"
+      ]
+    }
+  ]
+};
 
-// Função para criar o formulário dinamicamente e validar
+// Função para criar o formulário COPM dinamicamente e validar
 function createCOPMForm(containerId) {
   const container = document.getElementById(containerId);
   if (!container) {
@@ -59,11 +59,14 @@ function createCOPMForm(containerId) {
     return;
   }
 
+  // Limpa container
+  container.innerHTML = '';
+
   // Criar o formulário
   const form = document.createElement("form");
   form.id = "copmForm";
 
-  copmModel.forEach((section, i) => {
+  modelos.copm.forEach((section, i) => {
     const sectionDiv = document.createElement("div");
     sectionDiv.style.border = "1px solid #ddd";
     sectionDiv.style.padding = "10px";
@@ -73,7 +76,7 @@ function createCOPMForm(containerId) {
     title.textContent = section.category;
     sectionDiv.appendChild(title);
 
-    // Pergunta 1
+    // Pergunta 1 - texto
     const q1Label = document.createElement("label");
     q1Label.setAttribute("for", `activity_${i}`);
     q1Label.textContent = section.questions[0];
@@ -86,7 +89,7 @@ function createCOPMForm(containerId) {
     q1Input.required = true;
     sectionDiv.appendChild(q1Input);
 
-    // Pergunta 2
+    // Pergunta 2 - número
     const q2Label = document.createElement("label");
     q2Label.setAttribute("for", `performance_${i}`);
     q2Label.textContent = section.questions[1];
@@ -101,7 +104,7 @@ function createCOPMForm(containerId) {
     q2Input.required = true;
     sectionDiv.appendChild(q2Input);
 
-    // Pergunta 3
+    // Pergunta 3 - número
     const q3Label = document.createElement("label");
     q3Label.setAttribute("for", `satisfaction_${i}`);
     q3Label.textContent = section.questions[2];
@@ -135,13 +138,12 @@ function createCOPMForm(containerId) {
   container.appendChild(form);
   container.appendChild(resultDiv);
 
-  // Validação e exibição dos dados
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     let valid = true;
     const errors = [];
 
-    copmModel.forEach((section, i) => {
+    modelos.copm.forEach((section, i) => {
       const activity = form[`activity_${i}`].value.trim();
       const performance = Number(form[`performance_${i}`].value);
       const satisfaction = Number(form[`satisfaction_${i}`].value);
@@ -168,7 +170,7 @@ function createCOPMForm(containerId) {
     }
 
     let output = "<h3>Resultados da Ficha COPM:</h3>";
-    copmModel.forEach((section, i) => {
+    modelos.copm.forEach((section, i) => {
       output += `<h4>${section.category}</h4>`;
       output += `<p><strong>Atividade:</strong> ${form[`activity_${i}`].value}</p>`;
       output += `<p><strong>Desempenho:</strong> ${form[`performance_${i}`].value}</p>`;
@@ -180,10 +182,8 @@ function createCOPMForm(containerId) {
     resultDiv.innerHTML = output;
   });
 }
-  // ... continue os outros modelos normalmente, sem duplicidade ...
-};
 
-// Aguarde o carregamento do DOM antes de executar
+// Controle dos outros modelos dinâmicos
 document.addEventListener('DOMContentLoaded', function() {
   const modeloSelect = document.getElementById('modelo');
   const form = document.getElementById('ficha-form');
@@ -198,6 +198,16 @@ document.addEventListener('DOMContentLoaded', function() {
       limparBtn.style.display = 'none';
       return;
     }
+
+    // Se o modelo for COPM, cria o formulário COPM separado
+    if(modelo === 'copm') {
+      form.style.display = 'none'; // esconde o form padrão
+      limparBtn.style.display = 'inline-block';
+      createCOPMForm('form-content');
+      return;
+    }
+
+    // Para os outros modelos (denver_ii e checklist_denver)
     form.style.display = 'block';
     limparBtn.style.display = 'inline-block';
 
@@ -264,6 +274,7 @@ document.addEventListener('DOMContentLoaded', function() {
     alert('Dados limpos!');
   });
 
+  // Para submissão dos formulários padrão (denver_ii e checklist_denver)
   form.addEventListener('submit', e => {
     e.preventDefault();
     const modelo = modeloSelect.value;

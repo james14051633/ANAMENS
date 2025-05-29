@@ -25,17 +25,16 @@ const modelos = {
   ],
    copm: [
      { label: 'Nome do Cliente', type: 'text', name: 'nome_cliente', required: true },
-      { label: 'Data', type: 'date', name: 'data', required: true },
-      { label: 'Idade', type: 'number', name: 'idade', required: true },
-      { label: 'Sexo', type: 'select', name: 'sexo', required: true, options: ['Feminino', 'Masculino', 'Outro'] },
-      { label: 'Ocupação Principal', type: 'text', name: 'ocupacao', required: true },
-      { label: 'Problemas de Desempenho (descreva até 5)', type: 'textarea', name: 'problemas', required: true },
-      { label: 'Importância (0 a 10)', type: 'number', name: 'importancia', required: true, min: 0, max: 10 },
-      { label: 'Desempenho (0 a 10)', type: 'number', name: 'desempenho', required: true, min: 0, max: 10 },
-      { label: 'Satisfação (0 a 10)', type: 'number', name: 'satisfacao', required: true, min: 0, max: 10 },
-      { label: 'Observações', type: 'textarea', name: 'observacoes', required: false }
-    ];
-
+  { label: 'Data', type: 'date', name: 'data', required: true },
+  { label: 'Idade', type: 'number', name: 'idade', required: true },
+  { label: 'Sexo', type: 'select', name: 'sexo', required: true, options: ['Feminino', 'Masculino', 'Outro'] },
+  { label: 'Ocupação Principal', type: 'text', name: 'ocupacao', required: true },
+  { label: 'Problemas de Desempenho (descreva até 5)', type: 'textarea', name: 'problemas', required: true },
+  { label: 'Importância (0 a 10)', type: 'number', name: 'importancia', required: true, min: 0, max: 10 },
+  { label: 'Desempenho (0 a 10)', type: 'number', name: 'desempenho', required: true, min: 0, max: 10 },
+  { label: 'Satisfação (0 a 10)', type: 'number', name: 'satisfacao', required: true, min: 0, max: 10 },
+  { label: 'Observações', type: 'textarea', name: 'observacoes', required: false }
+];
   ],
    sweaa: [
     { label: 'Nome da criança', type: 'text', name: 'nome_crianca', required: true },

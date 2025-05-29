@@ -51,7 +51,6 @@ const modelos = {
   ]
 };
 
-// Função para criar o formulário COPM dinamicamente e validar
 function createCOPMForm(containerId) {
   const container = document.getElementById(containerId);
   if (!container) {
@@ -59,10 +58,8 @@ function createCOPMForm(containerId) {
     return;
   }
 
-  // Limpa container
   container.innerHTML = '';
 
-  // Criar o formulário
   const form = document.createElement("form");
   form.id = "copmForm";
 
@@ -183,7 +180,6 @@ function createCOPMForm(containerId) {
   });
 }
 
-// Controle dos outros modelos dinâmicos
 document.addEventListener('DOMContentLoaded', function() {
   const modeloSelect = document.getElementById('modelo');
   const form = document.getElementById('ficha-form');
@@ -199,15 +195,13 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
 
-    // Se o modelo for COPM, cria o formulário COPM separado
     if(modelo === 'copm') {
-      form.style.display = 'none'; // esconde o form padrão
+      form.style.display = 'none';
       limparBtn.style.display = 'inline-block';
       createCOPMForm('form-content');
       return;
     }
 
-    // Para os outros modelos (denver_ii e checklist_denver)
     form.style.display = 'block';
     limparBtn.style.display = 'inline-block';
 
@@ -274,7 +268,6 @@ document.addEventListener('DOMContentLoaded', function() {
     alert('Dados limpos!');
   });
 
-  // Para submissão dos formulários padrão (denver_ii e checklist_denver)
   form.addEventListener('submit', e => {
     e.preventDefault();
     const modelo = modeloSelect.value;
@@ -297,7 +290,6 @@ document.addEventListener('DOMContentLoaded', function() {
           el.classList.remove('invalid');
         }
       }
-      // Validação de min/max para campos numéricos
       if (campo.type === 'number' && el && el.value) {
         const valor = Number(el.value);
         if (campo.min !== undefined && valor < campo.min) {

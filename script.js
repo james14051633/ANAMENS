@@ -121,7 +121,7 @@ form.addEventListener('submit', e => {
 });
 
 const modelos = {
-  checklist_denver: [
+  copm: [
     { label: 'Nome da criança', type: 'text', name: 'nome_crianca', required: true },
     { label: 'Data de nascimento', type: 'date', name: 'data_nascimento', required: true },
     { label: 'Idade (anos, meses, dias)', type: 'text', name: 'idade', required: true },

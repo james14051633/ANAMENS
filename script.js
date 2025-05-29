@@ -25,17 +25,161 @@ const modelos = {
     { label: 'Interpretação do teste', type: 'select', name: 'interpretacao', required: true, options: ['Normal', 'Questionável', 'Não aplicável'] }
   ],
   copm: [
-    { label: 'Nome do Cliente', type: 'text', name: 'nome_cliente', required: true },
-    { label: 'Data', type: 'date', name: 'data', required: true },
-    { label: 'Idade', type: 'number', name: 'idade', required: true, min: 0 },
-    { label: 'Sexo', type: 'select', name: 'sexo', required: true, options: ['Feminino', 'Masculino', 'Outro'] },
-    { label: 'Ocupação Principal', type: 'text', name: 'ocupacao', required: true },
-    { label: 'Problemas de Desempenho (descreva até 5)', type: 'textarea', name: 'problemas', required: true },
-    { label: 'Importância (0 a 10)', type: 'number', name: 'importancia', required: true, min: 0, max: 10 },
-    { label: 'Desempenho (0 a 10)', type: 'number', name: 'desempenho', required: true, min: 0, max: 10 },
-    { label: 'Satisfação (0 a 10)', type: 'number', name: 'satisfacao', required: true, min: 0, max: 10 },
-    { label: 'Observações', type: 'textarea', name: 'observacoes', required: false }
-  ],
+    {
+    category: "Cuidados Pessoais",
+    questions: [
+      "Escolha uma atividade importante para você relacionada a cuidados pessoais",
+      "Avalie seu desempenho nessa atividade (1 a 10)",
+      "Avalie sua satisfação com seu desempenho nessa atividade (1 a 10)"
+    ]
+  },
+  {
+    category: "Lazer",
+    questions: [
+      "Escolha uma atividade importante para você relacionada a lazer",
+      "Avalie seu desempenho nessa atividade (1 a 10)",
+      "Avalie sua satisfação com seu desempenho nessa atividade (1 a 10)"
+    ]
+  },
+  {
+    category: "Trabalho",
+    questions: [
+      "Escolha uma atividade importante para você relacionada ao trabalho",
+      "Avalie seu desempenho nessa atividade (1 a 10)",
+      "Avalie sua satisfação com seu desempenho nessa atividade (1 a 10)"
+    ]
+  }
+];
+
+// Função para criar o formulário dinamicamente e validar
+function createCOPMForm(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) {
+    console.error(`Elemento com id "${containerId}" não encontrado.`);
+    return;
+  }
+
+  // Criar o formulário
+  const form = document.createElement("form");
+  form.id = "copmForm";
+
+  copmModel.forEach((section, i) => {
+    const sectionDiv = document.createElement("div");
+    sectionDiv.style.border = "1px solid #ddd";
+    sectionDiv.style.padding = "10px";
+    sectionDiv.style.marginBottom = "15px";
+
+    const title = document.createElement("h2");
+    title.textContent = section.category;
+    sectionDiv.appendChild(title);
+
+    // Pergunta 1
+    const q1Label = document.createElement("label");
+    q1Label.setAttribute("for", `activity_${i}`);
+    q1Label.textContent = section.questions[0];
+    sectionDiv.appendChild(q1Label);
+
+    const q1Input = document.createElement("input");
+    q1Input.type = "text";
+    q1Input.id = `activity_${i}`;
+    q1Input.name = `activity_${i}`;
+    q1Input.required = true;
+    sectionDiv.appendChild(q1Input);
+
+    // Pergunta 2
+    const q2Label = document.createElement("label");
+    q2Label.setAttribute("for", `performance_${i}`);
+    q2Label.textContent = section.questions[1];
+    sectionDiv.appendChild(q2Label);
+
+    const q2Input = document.createElement("input");
+    q2Input.type = "number";
+    q2Input.id = `performance_${i}`;
+    q2Input.name = `performance_${i}`;
+    q2Input.min = 1;
+    q2Input.max = 10;
+    q2Input.required = true;
+    sectionDiv.appendChild(q2Input);
+
+    // Pergunta 3
+    const q3Label = document.createElement("label");
+    q3Label.setAttribute("for", `satisfaction_${i}`);
+    q3Label.textContent = section.questions[2];
+    sectionDiv.appendChild(q3Label);
+
+    const q3Input = document.createElement("input");
+    q3Input.type = "number";
+    q3Input.id = `satisfaction_${i}`;
+    q3Input.name = `satisfaction_${i}`;
+    q3Input.min = 1;
+    q3Input.max = 10;
+    q3Input.required = true;
+    sectionDiv.appendChild(q3Input);
+
+    form.appendChild(sectionDiv);
+  });
+
+  const submitBtn = document.createElement("button");
+  submitBtn.type = "submit";
+  submitBtn.textContent = "Enviar";
+  form.appendChild(submitBtn);
+
+  const resultDiv = document.createElement("div");
+  resultDiv.id = "result";
+  resultDiv.style.marginTop = "20px";
+  resultDiv.style.padding = "15px";
+  resultDiv.style.border = "1px solid #ccc";
+  resultDiv.style.background = "#f9f9f9";
+  resultDiv.style.display = "none";
+
+  container.appendChild(form);
+  container.appendChild(resultDiv);
+
+  // Validação e exibição dos dados
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    let valid = true;
+    const errors = [];
+
+    copmModel.forEach((section, i) => {
+      const activity = form[`activity_${i}`].value.trim();
+      const performance = Number(form[`performance_${i}`].value);
+      const satisfaction = Number(form[`satisfaction_${i}`].value);
+
+      if (!activity) {
+        valid = false;
+        errors.push(`Atividade em "${section.category}" é obrigatória.`);
+      }
+      if (!(performance >= 1 && performance <= 10)) {
+        valid = false;
+        errors.push(`Desempenho em "${section.category}" deve ser entre 1 e 10.`);
+      }
+      if (!(satisfaction >= 1 && satisfaction <= 10)) {
+        valid = false;
+        errors.push(`Satisfação em "${section.category}" deve ser entre 1 e 10.`);
+      }
+    });
+
+    if (!valid) {
+      resultDiv.style.display = "block";
+      resultDiv.style.color = "red";
+      resultDiv.innerHTML = errors.map(e => `<p>${e}</p>`).join("");
+      return;
+    }
+
+    let output = "<h3>Resultados da Ficha COPM:</h3>";
+    copmModel.forEach((section, i) => {
+      output += `<h4>${section.category}</h4>`;
+      output += `<p><strong>Atividade:</strong> ${form[`activity_${i}`].value}</p>`;
+      output += `<p><strong>Desempenho:</strong> ${form[`performance_${i}`].value}</p>`;
+      output += `<p><strong>Satisfação:</strong> ${form[`satisfaction_${i}`].value}</p>`;
+    });
+
+    resultDiv.style.display = "block";
+    resultDiv.style.color = "black";
+    resultDiv.innerHTML = output;
+  });
+}
   // ... continue os outros modelos normalmente, sem duplicidade ...
 };
 

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Fichas Adaptáveis - Anamnese</title>
+  <title>Ficha de Anamnese Dinâmica</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Montserrat&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
@@ -16,7 +16,7 @@
 
 <body>
   <div class="container">
-    <h1>Ficha de Anamnese Adaptável</h1>
+    <h1>Ficha de Anamnese Dinâmica</h1>
 
     <label for="modelo">Escolha o modelo da ficha:</label>
     <select id="modelo">
@@ -26,6 +26,8 @@
       <option value="especial">Ficha Necessidades Especiais</option>
     </select>
 
+    <button id="limpar-btn" style="margin-top: 10px; display:none;">Limpar Dados</button>
+
     <form id="ficha-form" style="display:none;">
       <div id="form-content"></div>
       <button type="submit">Salvar e Gerar PDF</button>
@@ -33,7 +35,6 @@
   </div>
 
   <script src="script.js"></script>
-  <script src="localStorageHelper.js"></script>
 </body>
 
 </html>

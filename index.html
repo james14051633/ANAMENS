@@ -4,12 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ficha de Anamnese Completa</title>
+  <title>Ficha de Anamnese</title>
 
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Montserrat&display=swap" rel="stylesheet" />
-
-  <!-- Link para o CSS -->
   <link rel="stylesheet" href="styles.css" />
 
   <!-- jsPDF e plugin -->
@@ -21,12 +18,11 @@
   <div class="container">
     <h1>Ficha de Anamnese</h1>
     <form id="anamnese-form">
-      <!-- Seção 1 -->
-      <h2>1. Informações Pessoais</h2>
-      <label for="nome">Nome completo:</label>
+      <h2>Informações Pessoais</h2>
+      <label for="nome">Nome completo*:</label>
       <input type="text" id="nome" name="nome" required />
 
-      <label for="data-nascimento">Data de nascimento:</label>
+      <label for="data-nascimento">Data de nascimento*:</label>
       <input type="date" id="data-nascimento" name="data-nascimento" required />
 
       <label for="telefone">Telefone:</label>
@@ -35,125 +31,14 @@
       <label for="email">Email:</label>
       <input type="email" id="email" name="email" />
 
-      <!-- Seção 2 -->
-      <h2>2. Histórico de Saúde</h2>
-      <label for="doencas">Doenças prévias ou atuais:</label>
-      <textarea id="doencas" name="doencas" rows="3"></textarea>
+      <!-- Adicione mais campos conforme necessário -->
 
-      <label for="medicacoes">Medicações em uso:</label>
-      <textarea id="medicacoes" name="medicacoes" rows="3"></textarea>
-
-      <label for="alergias">Alergias:</label>
-      <textarea id="alergias" name="alergias" rows="2"></textarea>
-
-      <!-- Seção 3 -->
-      <h2>3. Avaliação das AVDs e Habilidades</h2>
-      <label>Você apresenta dificuldades nas seguintes atividades? (Marque as que se aplicam)</label>
-      <div class="checkbox-group">
-        <label><input type="checkbox" name="dificuldades" value="Alimentação" /> Alimentação</label>
-        <label><input type="checkbox" name="dificuldades" value="Higiene pessoal" /> Higiene pessoal</label>
-        <label><input type="checkbox" name="dificuldades" value="Vestir-se" /> Vestir-se</label>
-        <label><input type="checkbox" name="dificuldades" value="Mobilidade" /> Mobilidade</label>
-        <label><input type="checkbox" name="dificuldades" value="Comunicação" /> Comunicação</label>
-        <label><input type="checkbox" name="dificuldades" value="Socialização" /> Socialização</label>
-      </div>
-
-      <label for="habilidades-motoras">Habilidades motoras finas e grossas (descreva):</label>
-      <textarea id="habilidades-motoras" name="habilidades-motoras" rows="4"></textarea>
-
-      <label for="aspectos-cognitivos">Aspectos cognitivos relevantes:</label>
-      <textarea id="aspectos-cognitivos" name="aspectos-cognitivos" rows="4"></textarea>
-
-      <!-- Seção 4 -->
-      <h2>4. Aspectos Psicossociais</h2>
-      <label for="situacao-familiar">Situação familiar:</label>
-      <textarea id="situacao-familiar" name="situacao-familiar" rows="3"></textarea>
-
-      <label for="rede-apoio">Rede de apoio (familiares, amigos, profissionais):</label>
-      <textarea id="rede-apoio" name="rede-apoio" rows="3"></textarea>
-
-      <!-- Seção 5 -->
-      <h2>5. Avaliação Sensorial</h2>
-      <label for="hiperatividade-sensorial">Hiperatividade sensorial:</label>
-      <select id="hiperatividade-sensorial" name="hiperatividade-sensorial" required>
-        <option value="" disabled selected>Selecione</option>
-        <option value="nenhuma">Nenhuma</option>
-        <option value="leve">Leve</option>
-        <option value="moderada">Moderada</option>
-        <option value="severa">Severa</option>
-      </select>
-
-      <label for="hipoatividade-sensorial">Hipoatividade sensorial:</label>
-      <select id="hipoatividade-sensorial" name="hipoatividade-sensorial" required>
-        <option value="" disabled selected>Selecione</option>
-        <option value="nenhuma">Nenhuma</option>
-        <option value="leve">Leve</option>
-        <option value="moderada">Moderada</option>
-        <option value="severa">Severa</option>
-      </select>
-
-      <label for="sensibilidade-tatil">Sensibilidade tátil (descrição):</label>
-      <textarea id="sensibilidade-tatil" name="sensibilidade-tatil" rows="3"></textarea>
-
-      <!-- Seção 6 -->
-      <h2>6. Comunicação e Linguagem</h2>
-      <label for="comunicacao-verbal">Comunicação verbal:</label>
-      <select id="comunicacao-verbal" name="comunicacao-verbal" required>
-        <option value="" disabled selected>Selecione</option>
-        <option value="funcional">Funcional</option>
-        <option value="limitada">Limitada</option>
-        <option value="ausente">Ausente</option>
-      </select>
-
-      <label for="uso-tecnologias">Uso de tecnologias assistivas:</label>
-      <textarea id="uso-tecnologias" name="uso-tecnologias" rows="3" placeholder="Ex: tablets, softwares, dispositivos"></textarea>
-
-      <!-- Seção 7 -->
-      <h2>7. Comportamento e Emoções</h2>
-      <label for="comportamento">Comportamento observado:</label>
-      <textarea id="comportamento" name="comportamento" rows="4"></textarea>
-
-      <label for="emocao">Expressão emocional:</label>
-      <select id="emocao" name="emocao" required>
-        <option value="" disabled selected>Selecione</option>
-        <option value="estavel">Estável</option>
-        <option value="variavel">Variável</option>
-        <option value="instavel">Instável</option>
-      </select>
-
-      <!-- Seção 8 -->
-      <h2>8. Histórico Familiar</h2>
-      <label for="condicoes-familiares">Condições médicas na família:</label>
-      <textarea id="condicoes-familiares" name="condicoes-familiares" rows="3"></textarea>
-
-      <label for="apoio-familiar">Rede de apoio familiar:</label>
-      <textarea id="apoio-familiar" name="apoio-familiar" rows="3"></textarea>
-
-      <!-- Seção 9 -->
-      <h2>9. Protocolos Utilizados</h2>
-      <p>Selecione os protocolos que serão utilizados no atendimento:</p>
-      <div class="checkbox-group">
-        <label><input type="checkbox" name="protocolos" value="Consulta" /> Consulta</label>
-        <label><input type="checkbox" name="protocolos" value="Avaliação do desempenho ocupacional" /> Avaliação do desempenho ocupacional</label>
-        <label><input type="checkbox" name="protocolos" value="Avaliação dos componentes de desempenho ocupacional" /> Avaliação dos componentes de desempenho ocupacional</label>
-        <label><input type="checkbox" name="protocolos" value="Prescrição de recursos de ajuda técnica e adaptação ambiental" /> Prescrição de recursos de ajuda técnica e adaptação ambiental</label>
-        <label><input type="checkbox" name="protocolos" value="Avaliação da acessibilidade/ergonomia" /> Avaliação da acessibilidade/ergonomia</label>
-        <label><input type="checkbox" name="protocolos" value="Reavaliação" /> Reavaliação</label>
-        <label><input type="checkbox" name="protocolos" value="Aplicação de testes" /> Aplicação de testes</label>
-        <label><input type="checkbox" name="protocolos" value="Outras avaliações" /> Outras avaliações</label>
-      </div>
-
-      <!-- Seção 10 -->
-      <h2>10. Objetivos Terapêuticos</h2>
-      <label for="objetivos">Quais são os principais objetivos do tratamento?</label>
-      <textarea id="objetivos" name="objetivos" rows="4"></textarea>
-
-      <button type="submit" id="submit-btn">Enviar e Gerar PDF</button>
+      <button type="submit">Gerar PDF</button>
     </form>
   </div>
 
-  <!-- Link para o JavaScript -->
   <script src="script.js"></script>
+  <script src="localStorageHelper.js"></script>
 </body>
 
 </html>
